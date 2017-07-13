@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "BlankCordovaApp1", "BlankCordovaApp1\BlankCordovaApp1.jsproj", "{548B5C11-3709-48F1-83F9-B973225A6587}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "Project-Quiz", "BlankCordovaApp1\Project-Quiz.jsproj", "{548B5C11-3709-48F1-83F9-B973225A6587}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
