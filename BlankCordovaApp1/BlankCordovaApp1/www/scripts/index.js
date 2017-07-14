@@ -73,9 +73,22 @@ function GetQuestions()
                             break;
                         case "textarea": DisplayTextarea();
                             break;
-                        case "choice": var options = [i + 1];
-                                        DisplayChoice(options);
+                        case "choice": if (questArray.hasOwnProperty("options"))
+                        {
+                            var optArray = questArray["options"];
+                            DisplayChoice(optArray);
+                        }
                             break;
+                        case "slidingoption": if (questArray.hasOwnProperty("options"))
+                        {
+                            var optArray = questArray["options"];
+                            DisplaySlidingOption(optArray);
+                        }
+                            break;
+                        case "scale": var optArray = questArray;
+                            DisplayScale(optArray);
+                            break;
+
                         default:
                             alert("Not working");
                             break;
@@ -118,12 +131,53 @@ function GetQuestions()
             var radioBtn = document.createElement("input");
             radioBtn.setAttribute("type", "radio");
             var lbl = document.createElement("label");
-            var txt = document.createTextNode(k);
+            var txt = document.createTextNode(opts[k]);
             lbl.appendChild(txt);
             question.appendChild(radioBtn);
             question.appendChild(lbl);
         }
 
+    }
+
+    function DisplaySlidingOption(opts)
+    {
+
+        var slider = document.createElement("input");
+
+        slider.setAttribute("type", "range");
+        slider.setAttribute("min", "1");
+        slider.setAttribute("max", opts.length);
+        slider.setAttribute("value", "1");
+        slider.setAttribute("class", "slider-style");
+        question.appendChild(slider);
+
+        var div = document.createElement("div");
+        div.setAttribute("id", "text-below");
+        question.appendChild(div);
+
+        var width = 100 / (opts.length - 1);
+
+        for (var i = 0; i < opts.length; i++)
+        {
+            var w = width;
+            if (i === 0 || i === opts.length - 1)
+                w = width / 2;
+
+            $("#text-below").append("<label style='width: " + w + "%'>" + opts[i] + "</label>");
+        }
+ 
+    }
+
+    function DisplayScale(obj)
+    {
+        var slider = document.createElement("input");
+        slider.setAttribute("type", "range");
+        slider.setAttribute("min", obj["start"]);
+        slider.setAttribute("max", obj["end"]);
+        slider.setAttribute("step", obj["increment"])
+        slider.setAttribute("value", "1");
+        slider.setAttribute("class", "slider-style");
+        question.appendChild(slider);
     }
 
 }
