@@ -37,17 +37,15 @@ function GetQuestions()
         
 
         //create the elements
-        var myH1 = document.createElement("h1");
-        var myH3 = document.createElement("h3")
+        var myHeading = document.createElement("p");
+        myHeading.id = "myHeading";
 
         //modify the text to the value of the json object "id"
-        myH1.textContent = jsonObject["id"];
-        myH3.textContent = jsonObject["title"];
+        myHeading.textContent = jsonObject["title"];
 
 
         //insert the content inside the div
-        question.appendChild(myH1);
-        question.appendChild(myH3);
+        question.appendChild(myHeading);
 
         for (var i = 0; i < jsonObject.questions.length; i++)
         {
@@ -112,6 +110,7 @@ function GetQuestions()
 
     function DisplayTextbox()
     {
+        
         var txtbox = document.createElement("input");
         txtbox.type = "text";
         question.appendChild(txtbox);
@@ -121,6 +120,7 @@ function GetQuestions()
     {
         var txtArea = document.createElement("textarea");
         txtArea.rows = "4";
+        txtArea.id = "textArea";
         question.appendChild(txtArea);
     }
 
@@ -141,7 +141,6 @@ function GetQuestions()
 
     function DisplaySlidingOption(opts)
     {
-
         var slider = document.createElement("input");
 
         slider.setAttribute("type", "range");
@@ -164,13 +163,19 @@ function GetQuestions()
             if (i === 0 || i === opts.length - 1)
                 w = width / 2;
 
-            $("#text-below").append("<label style='width: " + w + "%'>" + opts[i] + "</label>");
+            var lbl = document.createElement("label");
+            lbl.setAttribute("width", w + "%");
+            lbl.setAttribute("class", "lbl");
+            var txt = document.createTextNode(opts[i]);
+            lbl.appendChild(txt);
+            div.appendChild(lbl);
         }
  
     }
 
     function DisplayScale(obj)
     {
+
         var slider = document.createElement("input");
         slider.setAttribute("type", "range");
         slider.setAttribute("min", obj["start"]);
