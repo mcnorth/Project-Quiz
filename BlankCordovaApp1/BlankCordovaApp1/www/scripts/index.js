@@ -157,6 +157,7 @@ function GetQuestions()
 
         var width = 100 / (opts.length - 1);
 
+
         for (var i = 0; i < opts.length; i++)
         {
             var w = width;
