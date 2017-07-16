@@ -1,9 +1,14 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+
 #quiz-page-one {
     text-align: center;
     background-color: #3299BB;
     color: white;
     
-    font-family: 'Nunito', sans-serif;
+    
 }
 
 #myHeading {

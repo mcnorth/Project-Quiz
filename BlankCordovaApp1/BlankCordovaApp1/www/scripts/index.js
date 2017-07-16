@@ -6,46 +6,70 @@
 
 function GetQuestions()
 {
-    var question = document.getElementById("questions");
-
-    //create javascript object
     var requestURL = "questions.json";
-
-    //create HttpRequest object
     var request = new XMLHttpRequest();
+    var question = document.getElementById("para");
+    
 
-    //open the request object
-    request.open("GET", requestURL);
-
-    //let the server know we want a json object
-    request.responseType = "json";
-
-    //send the request
-    request.send();
-
-    request.onload = function ()
+    try
     {
-        //store the response from the server ina variable
-        var quizQuestions = request.response;
-
-        //call a function to fill the page
-        DisplayPage(quizQuestions);
+        // Opera 8.0+, Firefox, Chrome, Safari
+        request = new XMLHttpRequest();
     }
+    catch (e)
+    {
+        // Internet Explorer Browsers
+        try
+        {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+
+        }
+        catch (e)
+        {
+            try
+            {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (e)
+            {
+                
+                alert("Your browser broke!");
+                return false;
+            }
+
+        }
+    }
+
+    request.onreadystatechange = function () {
+
+        if (request.readyState == 4)
+        {
+            try
+            {
+                // Javascript function JSON.parse to parse JSON data
+                var jsonObj = JSON.parse(request.responseText);
+
+                // jsonObj variable now contains the data structure 
+                DisplayPage(jsonObj);
+            }
+            catch (e)
+            {
+                alert(e);
+            }
+            
+        }
+    }
+
+    request.open("GET", requestURL, true);
+    request.send();
 
     function DisplayPage(jsonObject)
     {
+        var collHeading = document.getElementById("head3").innerHTML;
+        var collPara = document.getElementById("para");
+        var res = collHeading.replace("Start", jsonObject["title"]);
+        document.getElementById("head3").innerHTML = res;
         
-
-        //create the elements
-        var myHeading = document.createElement("p");
-        myHeading.id = "myHeading";
-
-        //modify the text to the value of the json object "id"
-        myHeading.textContent = jsonObject["title"];
-
-
-        //insert the content inside the div
-        question.appendChild(myHeading);
 
         for (var i = 0; i < jsonObject.questions.length; i++)
         {
@@ -65,7 +89,7 @@ function GetQuestions()
                     var type = questArray[key];
                     switch (type)
                     {
-                        case "date": DisplayDate();
+                        case "date": DisplayDate(questArray);
                             break;
                         case "textbox": DisplayTextbox();
                             break;
@@ -99,11 +123,15 @@ function GetQuestions()
 
     }
 
-    function DisplayDate()
+    function DisplayDate(dateObj)
     {
+        
+        var dText = dateObj["text"];
+        
+        
         var today = new Date();
         var myP = document.createElement("p");
-        myP.textContent = today;
+        myP.textContent = today.toDateString();
         question.appendChild(myP);
 
     }
@@ -114,6 +142,7 @@ function GetQuestions()
         var txtbox = document.createElement("input");
         txtbox.type = "text";
         question.appendChild(txtbox);
+        $("#para :text").textinput();
     }
 
     function DisplayTextarea()
@@ -122,6 +151,7 @@ function GetQuestions()
         txtArea.rows = "4";
         txtArea.id = "textArea";
         question.appendChild(txtArea);
+        $("#para :input").textinput();
     }
 
     function DisplayChoice(opts)
@@ -135,6 +165,7 @@ function GetQuestions()
             lbl.appendChild(txt);
             question.appendChild(radioBtn);
             question.appendChild(lbl);
+            $("input[type='radio']").checkboxradio().checkboxradio("refresh");
         }
 
     }
@@ -149,6 +180,7 @@ function GetQuestions()
         slider.setAttribute("value", "1");
         slider.setAttribute("class", "slider-style");
         question.appendChild(slider);
+        
 
         var div = document.createElement("div");
         div.setAttribute("id", "text-below");
@@ -186,5 +218,5 @@ function GetQuestions()
         question.appendChild(slider);
     }
 
-}
+};
 
