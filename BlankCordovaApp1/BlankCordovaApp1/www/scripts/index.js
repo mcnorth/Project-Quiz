@@ -157,17 +157,34 @@ function GetQuestions()
 
     function DisplayChoice(opts)
     {
+        var selectMenu = document.createElement("select");
+        var option = document.createElement("option");
+        var optionText = document.createTextNode("Choose...");
+        option.setAttribute("value", "");
+        option.setAttribute("disabled", "disabled");
+        option.setAttribute("selected", "selected");
+        option.appendChild(optionText);
+        selectMenu.appendChild(option);
+        
         for (var k = 0; k < opts.length; k++)
         {
-            var radioBtn = document.createElement("input");
-            radioBtn.setAttribute("type", "radio");
-            var lbl = document.createElement("label");
-            var txt = document.createTextNode(opts[k]);
-            lbl.appendChild(txt);
-            question.appendChild(radioBtn);
-            question.appendChild(lbl);
-            $("input[type='radio']").checkboxradio().checkboxradio("refresh");
+            var optionDrop = document.createElement("option");
+            var optDropText = document.createTextNode(opts[k]);
+            optionDrop.setAttribute("value", k);
+            optionDrop.appendChild(optDropText);
+            selectMenu.appendChild(optionDrop);
+        //    var radioBtn = document.createElement("input");
+        //    radioBtn.setAttribute("type", "radio");
+        //    var lbl = document.createElement("label");
+        //    var txt = document.createTextNode(opts[k]);
+        //    lbl.appendChild(txt);
+        //    question.appendChild(radioBtn);
+        //    question.appendChild(lbl);
+        //    $("input[type='radio']").checkboxradio().checkboxradio("refresh");
         }
+
+        question.appendChild(selectMenu);
+        $('select').selectmenu();
 
     }
 
