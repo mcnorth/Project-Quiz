@@ -1,5 +1,21 @@
+@font-face
+{
+    font-family: "replayRounded";
+    src: url("../fonts/BPREPLAY.OTF");
+    
+}
+
+@font-face {
+
+    font-family: "replayRounded";
+    src: url("../fonts/BPREPLAYBOLD.OTF");
+    font-weight: bold;
+}
+
+
+
 body {
-    font-family: 'Nunito', sans-serif;
+    
 }
 
 
@@ -7,18 +23,23 @@ body {
     text-align: center;
     background-color: #3299BB;
     color: white;
-    
-    
+    font-family: replayRounded;
 }
 
-#myHeading {
+#head3
+{
+    font-family: replayRounded;
+}
+
+.questHeading {
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background: white;
-    padding: 10px;
-    color: #424242;
+    background: #FF9900;
+    padding: 3px;
+    color: white;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
+    text-shadow:none;
 }
 
 
@@ -56,8 +77,8 @@ input[type=text] {
     border-radius: 0.3em;
     border: 1px solid #aaa;
     color: #333;
-    text-shadow: 0 1px 0 #fff;
-    outline-color: #000000;
+    
+    
     
 }
 

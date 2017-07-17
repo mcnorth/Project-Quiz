@@ -80,6 +80,7 @@ function GetQuestions()
                 if (key == "text")
                 {
                     var myP = document.createElement("p");
+                    myP.setAttribute("class", "questHeading");
                     myP.textContent = questArray[key];
                     question.appendChild(myP);
                 }
