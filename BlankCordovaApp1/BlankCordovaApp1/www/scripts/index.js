@@ -6,48 +6,70 @@
 
 function GetQuestions()
 {
-    var question = document.getElementById("questions");
-
-    //create javascript object
     var requestURL = "questions.json";
-
-    //create HttpRequest object
     var request = new XMLHttpRequest();
+    var question = document.getElementById("para");
+    
 
-    //open the request object
-    request.open("GET", requestURL);
-
-    //let the server know we want a json object
-    request.responseType = "json";
-
-    //send the request
-    request.send();
-
-    request.onload = function ()
+    try
     {
-        //store the response from the server ina variable
-        var quizQuestions = request.response;
-
-        //call a function to fill the page
-        DisplayPage(quizQuestions);
+        // Opera 8.0+, Firefox, Chrome, Safari
+        request = new XMLHttpRequest();
     }
+    catch (e)
+    {
+        // Internet Explorer Browsers
+        try
+        {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+
+        }
+        catch (e)
+        {
+            try
+            {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (e)
+            {
+                
+                alert("Your browser broke!");
+                return false;
+            }
+
+        }
+    }
+
+    request.onreadystatechange = function () {
+
+        if (request.readyState == 4)
+        {
+            try
+            {
+                // Javascript function JSON.parse to parse JSON data
+                var jsonObj = JSON.parse(request.responseText);
+
+                // jsonObj variable now contains the data structure 
+                DisplayPage(jsonObj);
+            }
+            catch (e)
+            {
+                alert(e);
+            }
+            
+        }
+    }
+
+    request.open("GET", requestURL, true);
+    request.send();
 
     function DisplayPage(jsonObject)
     {
+        var collHeading = document.getElementById("head3").innerHTML;
+        var collPara = document.getElementById("para");
+        var res = collHeading.replace("Start", jsonObject["title"]);
+        document.getElementById("head3").innerHTML = res;
         
-
-        //create the elements
-        var myH1 = document.createElement("h1");
-        var myH3 = document.createElement("h3")
-
-        //modify the text to the value of the json object "id"
-        myH1.textContent = jsonObject["id"];
-        myH3.textContent = jsonObject["title"];
-
-
-        //insert the content inside the div
-        question.appendChild(myH1);
-        question.appendChild(myH3);
 
         for (var i = 0; i < jsonObject.questions.length; i++)
         {
@@ -58,6 +80,7 @@ function GetQuestions()
                 if (key == "text")
                 {
                     var myP = document.createElement("p");
+                    myP.setAttribute("class", "questHeading");
                     myP.textContent = questArray[key];
                     question.appendChild(myP);
                 }
@@ -67,7 +90,7 @@ function GetQuestions()
                     var type = questArray[key];
                     switch (type)
                     {
-                        case "date": DisplayDate();
+                        case "date": DisplayDate(questArray);
                             break;
                         case "textbox": DisplayTextbox();
                             break;
@@ -101,27 +124,35 @@ function GetQuestions()
 
     }
 
-    function DisplayDate()
+    function DisplayDate(dateObj)
     {
+        
+        var dText = dateObj["text"];
+        
+        
         var today = new Date();
         var myP = document.createElement("p");
-        myP.textContent = today;
+        myP.textContent = today.toDateString();
         question.appendChild(myP);
 
     }
 
     function DisplayTextbox()
     {
+        
         var txtbox = document.createElement("input");
         txtbox.type = "text";
         question.appendChild(txtbox);
+        $("#para :text").textinput();
     }
 
     function DisplayTextarea()
     {
         var txtArea = document.createElement("textarea");
         txtArea.rows = "4";
+        txtArea.id = "textArea";
         question.appendChild(txtArea);
+        $("#para :input").textinput();
     }
 
     function DisplayChoice(opts)
@@ -135,13 +166,13 @@ function GetQuestions()
             lbl.appendChild(txt);
             question.appendChild(radioBtn);
             question.appendChild(lbl);
+            $("input[type='radio']").checkboxradio().checkboxradio("refresh");
         }
 
     }
 
     function DisplaySlidingOption(opts)
     {
-
         var slider = document.createElement("input");
 
         slider.setAttribute("type", "range");
@@ -150,6 +181,7 @@ function GetQuestions()
         slider.setAttribute("value", "1");
         slider.setAttribute("class", "slider-style");
         question.appendChild(slider);
+        
 
         var div = document.createElement("div");
         div.setAttribute("id", "text-below");
@@ -164,13 +196,19 @@ function GetQuestions()
             if (i === 0 || i === opts.length - 1)
                 w = width / 2;
 
-            $("#text-below").append("<label style='width: " + w + "%'>" + opts[i] + "</label>");
+            var lbl = document.createElement("label");
+            lbl.setAttribute("width", w + "%");
+            lbl.setAttribute("class", "lbl");
+            var txt = document.createTextNode(opts[i]);
+            lbl.appendChild(txt);
+            div.appendChild(lbl);
         }
  
     }
 
     function DisplayScale(obj)
     {
+
         var slider = document.createElement("input");
         slider.setAttribute("type", "range");
         slider.setAttribute("min", obj["start"]);
@@ -181,5 +219,5 @@ function GetQuestions()
         question.appendChild(slider);
     }
 
-}
+};
 
