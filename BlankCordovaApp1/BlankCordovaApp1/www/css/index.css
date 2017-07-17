@@ -19,12 +19,32 @@ body {
 }
 
 
+
 #quiz-page-one {
     text-align: center;
     background-color: #BD1550;
     color: white;
     font-family: replayRounded;
+    height: 100%;
 }
+
+#front-img {
+    padding-bottom: 15px;
+    width: 100%;
+    height: auto;
+}
+
+#front-page {
+    text-align: center;
+    background-color: #BD1550;
+    color: white;
+    font-family: replayRounded;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 #head3
 {

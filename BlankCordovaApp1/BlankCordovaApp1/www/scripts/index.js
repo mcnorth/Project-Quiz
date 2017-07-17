@@ -173,14 +173,6 @@ function GetQuestions()
             optionDrop.setAttribute("value", k);
             optionDrop.appendChild(optDropText);
             selectMenu.appendChild(optionDrop);
-        //    var radioBtn = document.createElement("input");
-        //    radioBtn.setAttribute("type", "radio");
-        //    var lbl = document.createElement("label");
-        //    var txt = document.createTextNode(opts[k]);
-        //    lbl.appendChild(txt);
-        //    question.appendChild(radioBtn);
-        //    question.appendChild(lbl);
-        //    $("input[type='radio']").checkboxradio().checkboxradio("refresh");
         }
 
         question.appendChild(selectMenu);

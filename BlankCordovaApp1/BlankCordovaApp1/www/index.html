@@ -13,13 +13,25 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
-    
     <script src="scripts/jquery-2.0.1.js"></script>
     <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
     <script src="scripts/index.js"></script>
     <title>ProjectQuiz</title>
 </head>
 <body>
+    <div data-role="page" id="front-page">
+        
+        <div data-role="main" class="ui-content">
+            <div class="ui-grid-solo ui-responsive front-content">
+                <div class="ui-block-a" >
+                    <img src="images/front-logo.png" id="front-img">
+                    <br />
+                    <a data-role="button" href="#quiz-page-one" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Mood Survey</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
     <div data-role="page" id="quiz-page-one">
         <div data-role="header" id="header" data-theme="b">
             <p id="header-text">Quiz Page</p>
@@ -28,7 +40,7 @@
             <div class="page-container">
                 <div data-role="content" id="questions">
                     
-                    <div data-role="collapsible" data-theme="b" data-content-theme="b" data-collapsed="false"  data-collapsed-icon="" data-expanded-icon="" id="questionSection"  >
+                    <div data-role="collapsible" data-theme="b" data-content-theme="a" data-collapsed="false"  data-collapsed-icon="" data-expanded-icon="" id="questionSection"  >
                         <h3 id="head3">Start</h3>
                         
                         <p id="para">
