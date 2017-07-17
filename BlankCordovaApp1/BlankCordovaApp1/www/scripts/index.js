@@ -224,6 +224,7 @@ function GetQuestions()
         slider.setAttribute("max", obj["end"]);
         slider.setAttribute("step", obj["increment"])
         slider.setAttribute("value", "1");
+        slider.setAttribute("data-highlight", "true");
         slider.setAttribute("class", "slider-style");
         question.appendChild(slider);
     }

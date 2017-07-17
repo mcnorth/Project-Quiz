@@ -195,3 +195,11 @@ input[type=range] {
     input[type=range]:focus::-ms-fill-upper {
         background: #ddd;
     }
+
+input .ui-slider-input {
+    display: none;
+}
+
+.full-width-slider .ui-slider-track {
+    margin-left: 15px;
+}
