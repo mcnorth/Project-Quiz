@@ -111,10 +111,17 @@ function GetQuestions()
                         case "scale": var optArray = questArray;
                             DisplayScale(optArray);
                             break;
+                        case "multiplechoice": if (questArray.hasOwnProperty("options"))
+                        {
+                            var optArray = questArray["options"];
+                            DisplayChoice(optArray);
+                        }
+                            break;
 
                         default:
                             alert("Not working");
                             break;
+
 
                     }
                 }
@@ -128,8 +135,6 @@ function GetQuestions()
     {
         
         var dText = dateObj["text"];
-        
-        
         var today = new Date();
         var myP = document.createElement("p");
         myP.textContent = today.toDateString();
