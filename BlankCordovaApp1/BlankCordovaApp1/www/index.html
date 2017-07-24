@@ -16,24 +16,28 @@
     <script src="scripts/jquery-2.0.1.js"></script>
     <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
     <script src="scripts/index.js"></script>
+    
     <title>ProjectQuiz</title>
 </head>
 <body>
-    <div data-role="page" id="front-page">
+    <div data-role="page" id="front-page" data-dom-cache="false">
         
         <div data-role="main" class="ui-content">
             <div class="ui-grid-solo ui-responsive front-content">
                 <div class="ui-block-a" >
                     <img src="images/front-logo.png" id="front-img">
                     <br />
-                    <a data-role="button" href="#quiz-page-one" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Mood Survey</a>
+                    <a data-role="button" href="#quiz-page-one" id="btnMoodSurvay" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn" onclick="getMSQuestions()">Mood Survey</a>
+                    <br />
+                    <a data-role="button" href="#quiz-page-one" id="btnExamGrade" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn" onclick="getEGQuestions()">Exam Grade</a>
                 </div>
             </div>
         </div>
         
     </div>
-    <div data-role="page" id="quiz-page-one">
-        <div data-role="header" id="header" data-theme="b" data-add-back-btn="true">
+    <div data-role="page" id="quiz-page-one" >
+        
+        <div data-role="header" id="header" data-theme="b" data-add-back-btn="true" >
             <p id="header-text">Quiz Page</p>
         </div>
         <div data-role="main" class="ui-content">
@@ -50,10 +54,8 @@
                 </div>
             </div>
         </div>
-        <script>
-            GetQuestions();
-        </script>
     </div>
+    
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
 </body>
