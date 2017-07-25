@@ -19,12 +19,32 @@ body {
 }
 
 
+
 #quiz-page-one {
     text-align: center;
-    background-color: #3299BB;
+    background-color: #BD1550;
     color: white;
     font-family: replayRounded;
+    height: 100%;
 }
+
+#front-img {
+    padding-bottom: 15px;
+    width: 100%;
+    height: auto;
+}
+
+#front-page {
+    text-align: center;
+    background-color: #BD1550;
+    color: white;
+    font-family: replayRounded;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 #head3
 {
@@ -34,12 +54,12 @@ body {
 .questHeading {
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background: #FF9900;
+    background: #444444;
     padding: 3px;
-    color: white;
+    color: #ffffff;
     font-weight: 700;
     font-size: 18px;
-    text-shadow:none;
+    text-shadow: none;
 }
 
 
@@ -66,35 +86,12 @@ body {
 }
 
 input[type=text] {
-    
-    
-    margin: .5em 0;
-    padding: .3em;
-    position: relative;
-    -webkit-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    -moz-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    border-radius: 0.3em;
-    border: 1px solid #aaa;
-    color: #333;
-    
-    
-    
+
+    color: white;
+
 }
 
-#textArea {
-    margin: .5em 0;
-    padding: .3em;
-    position: relative;
-    -webkit-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    -moz-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
-    border-radius: 0.3em;
-    border: 1px solid #aaa;
-    color: #333;
-    text-shadow: 0 1px 0 #fff;
-    outline-color: #000000;
-}
+
 
    
     
@@ -114,26 +111,27 @@ input[type=range] {
         height: 8.4px;
         cursor: pointer;
         animate: 0.2s;
-        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-        background: #3071a9;
-        border-radius: 1.3px;
-        border: 0.2px solid #010101;
+        background: #ddd;
+        border-radius: 3px;
+        border: none;
+        
     }
 
     input[type=range]::-webkit-slider-thumb {
-        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-        border: 1px solid #000000;
-        height: 36px;
-        width: 16px;
-        border-radius: 3px;
-        background: #ffffff;
+        border: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #BD1550;
         cursor: pointer;
         -webkit-appearance: none;
-        margin-top: -14px;
+        margin-top: -7px;
     }
 
+    
+
     input[type=range]:focus::-webkit-slider-runnable-track {
-        background: #367ebd;
+        background: #ccc;
     }
 
     input[type=range]::-moz-range-track {
@@ -169,17 +167,15 @@ input[type=range] {
     }
 
     input[type=range]::-ms-fill-lower {
-        background: #2a6495;
-        border: 0.2px solid #010101;
-        border-radius: 2.6px;
-        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        background: #000000;
+        border-radius: 10px;
+        
     }
 
     input[type=range]::-ms-fill-upper {
-        background: #3071a9;
-        border: 0.2px solid #010101;
-        border-radius: 2.6px;
-        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        background: #ddd;
+        border-radius: 10px;
+
     }
 
     input[type=range]::-ms-thumb {
@@ -193,9 +189,17 @@ input[type=range] {
     }
 
     input[type=range]:focus::-ms-fill-lower {
-        background: #3071a9;
+        background: #000000;
     }
 
     input[type=range]:focus::-ms-fill-upper {
-        background: #367ebd;
+        background: #ddd;
     }
+
+input .ui-slider-input {
+    display: none;
+}
+
+.full-width-slider .ui-slider-track {
+    margin-left: 15px;
+}

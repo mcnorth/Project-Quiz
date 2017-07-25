@@ -4,8 +4,12 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 
 
-function GetQuestions()
+function getMSQuestions()
 {
+    
+    
+       
+    
     var requestURL = "questions.json";
     var request = new XMLHttpRequest();
     var question = document.getElementById("para");
@@ -40,7 +44,8 @@ function GetQuestions()
         }
     }
 
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function ()
+    {
 
         if (request.readyState == 4)
         {
@@ -65,62 +70,72 @@ function GetQuestions()
 
     function DisplayPage(jsonObject)
     {
-        var collHeading = document.getElementById("head3").innerHTML;
-        var collPara = document.getElementById("para");
-        var res = collHeading.replace("Start", jsonObject["title"]);
-        document.getElementById("head3").innerHTML = res;
         
-
-        for (var i = 0; i < jsonObject.questions.length; i++)
-        {
-            var questArray = jsonObject.questions[i];
-
-            for (var key in questArray)
+            if(jsonObject[0].id = "quiz01")
             {
-                if (key == "text")
-                {
-                    var myP = document.createElement("p");
-                    myP.setAttribute("class", "questHeading");
-                    myP.textContent = questArray[key];
-                    question.appendChild(myP);
-                }
+                var moodSurveyQuest = jsonObject[0];
+                var collHeading = document.getElementById("head3").innerHTML;
+                var collPara = document.getElementById("para");
+                var res = collHeading.replace("Start", moodSurveyQuest["title"]);
+                document.getElementById("head3").innerHTML = res;
 
-                if (key == "type")
+                for (var i = 0; i < moodSurveyQuest.questions.length; i++)
                 {
-                    var type = questArray[key];
-                    switch (type)
+                    var questArray = moodSurveyQuest.questions[i];
+
+                    for (var key in questArray)
                     {
-                        case "date": DisplayDate(questArray);
-                            break;
-                        case "textbox": DisplayTextbox();
-                            break;
-                        case "textarea": DisplayTextarea();
-                            break;
-                        case "choice": if (questArray.hasOwnProperty("options"))
+                        if (key == "text")
                         {
-                            var optArray = questArray["options"];
-                            DisplayChoice(optArray);
+                            var myP = document.createElement("p");
+                            myP.setAttribute("class", "questHeading");
+                            myP.textContent = questArray[key];
+                            question.appendChild(myP);
                         }
-                            break;
-                        case "slidingoption": if (questArray.hasOwnProperty("options"))
+
+                        if (key == "type")
                         {
-                            var optArray = questArray["options"];
-                            DisplaySlidingOption(optArray);
+                            var type = questArray[key];
+                            switch (type) {
+                                case "date": DisplayDate(questArray);
+                                    break;
+                                case "textbox": DisplayTextbox();
+                                    break;
+                                case "textarea": DisplayTextarea();
+                                    break;
+                                case "choice": if (questArray.hasOwnProperty("options"))
+                                {
+                                    var optArray = questArray["options"];
+                                    DisplayChoice(optArray);
+                                }
+                                    break;
+                                case "slidingoption": if (questArray.hasOwnProperty("options"))
+                                {
+                                    var optArray = questArray["options"];
+                                    DisplaySlidingOption(optArray);
+                                }
+                                    break;
+                                case "scale": var optArray = questArray;
+                                    DisplayScale(optArray);
+                                    break;
+                                case "multiplechoice": if (questArray.hasOwnProperty("options"))
+                                {
+                                    var optArray = questArray["options"];
+                                    DisplayChoice(optArray);
+                                }
+                                    break;
+
+                                default:
+                                    alert("Not working");
+                                    break;
+
+
+                            }
                         }
-                            break;
-                        case "scale": var optArray = questArray;
-                            DisplayScale(optArray);
-                            break;
-
-                        default:
-                            alert("Not working");
-                            break;
-
                     }
                 }
-            }
-        }
-
+            } 
+        
 
     }
 
@@ -128,8 +143,6 @@ function GetQuestions()
     {
         
         var dText = dateObj["text"];
-        
-        
         var today = new Date();
         var myP = document.createElement("p");
         myP.textContent = today.toDateString();
@@ -157,17 +170,26 @@ function GetQuestions()
 
     function DisplayChoice(opts)
     {
+        var selectMenu = document.createElement("select");
+        var option = document.createElement("option");
+        var optionText = document.createTextNode("Choose...");
+        option.setAttribute("value", "");
+        option.setAttribute("disabled", "disabled");
+        option.setAttribute("selected", "selected");
+        option.appendChild(optionText);
+        selectMenu.appendChild(option);
+        
         for (var k = 0; k < opts.length; k++)
         {
-            var radioBtn = document.createElement("input");
-            radioBtn.setAttribute("type", "radio");
-            var lbl = document.createElement("label");
-            var txt = document.createTextNode(opts[k]);
-            lbl.appendChild(txt);
-            question.appendChild(radioBtn);
-            question.appendChild(lbl);
-            $("input[type='radio']").checkboxradio().checkboxradio("refresh");
+            var optionDrop = document.createElement("option");
+            var optDropText = document.createTextNode(opts[k]);
+            optionDrop.setAttribute("value", k);
+            optionDrop.appendChild(optDropText);
+            selectMenu.appendChild(optionDrop);
         }
+
+        question.appendChild(selectMenu);
+        $('select').selectmenu();
 
     }
 
@@ -215,6 +237,230 @@ function GetQuestions()
         slider.setAttribute("max", obj["end"]);
         slider.setAttribute("step", obj["increment"])
         slider.setAttribute("value", "1");
+        slider.setAttribute("data-highlight", "true");
+        slider.setAttribute("class", "slider-style");
+        question.appendChild(slider);
+    }
+
+};
+
+function getEGQuestions()
+{
+    
+
+
+    var requestURL = "questions.json";
+    var request = new XMLHttpRequest();
+    var question = document.getElementById("para");
+
+
+    try
+    {
+        // Opera 8.0+, Firefox, Chrome, Safari
+        request = new XMLHttpRequest();
+    }
+    catch (e)
+    {
+        // Internet Explorer Browsers
+        try
+        {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+
+        }
+        catch (e)
+        {
+            try
+            {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (e)
+            {
+
+                alert("Your browser broke!");
+                return false;
+            }
+
+        }
+    }
+
+    request.onreadystatechange = function ()
+    {
+
+        if (request.readyState == 4)
+        {
+            try
+            {
+                // Javascript function JSON.parse to parse JSON data
+                var jsonObj = JSON.parse(request.responseText);
+
+                // jsonObj variable now contains the data structure 
+                DisplayPage(jsonObj);
+            }
+            catch (e)
+            {
+                alert(e);
+            }
+
+        }
+    }
+
+    request.open("GET", requestURL, true);
+    request.send();
+
+    function DisplayPage(jsonObject)
+    {
+
+        if (jsonObject[1].id = "quiz02") {
+            var examGradeQuest = jsonObject[1];
+            var collHeading = document.getElementById("head3").innerHTML;
+            var collPara = document.getElementById("para");
+            var res = collHeading.replace("Start", examGradeQuest["title"]);
+            document.getElementById("head3").innerHTML = res;
+
+            for (var i = 0; i < examGradeQuest.questions.length; i++) {
+                var questArray = examGradeQuest.questions[i];
+
+                for (var key in questArray) {
+                    if (key == "text") {
+                        var myP = document.createElement("p");
+                        myP.setAttribute("class", "questHeading");
+                        myP.textContent = questArray[key];
+                        question.appendChild(myP);
+                    }
+
+                    if (key == "type") {
+                        var type = questArray[key];
+                        switch (type) {
+                            case "date": DisplayDate(questArray);
+                                break;
+                            case "textbox": DisplayTextbox();
+                                break;
+                            case "textarea": DisplayTextarea();
+                                break;
+                            case "choice": if (questArray.hasOwnProperty("options")) {
+                                var optArray = questArray["options"];
+                                DisplayChoice(optArray);
+                            }
+                                break;
+                            case "slidingoption": if (questArray.hasOwnProperty("options")) {
+                                var optArray = questArray["options"];
+                                DisplaySlidingOption(optArray);
+                            }
+                                break;
+                            case "scale": var optArray = questArray;
+                                DisplayScale(optArray);
+                                break;
+                            case "multiplechoice": if (questArray.hasOwnProperty("options")) {
+                                var optArray = questArray["options"];
+                                DisplayChoice(optArray);
+                            }
+                                break;
+
+                            default:
+                                alert("Not working");
+                                break;
+
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    function DisplayDate(dateObj) {
+
+        var dText = dateObj["text"];
+        var today = new Date();
+        var myP = document.createElement("p");
+        myP.textContent = today.toDateString();
+        question.appendChild(myP);
+
+    }
+
+    function DisplayTextbox() {
+
+        var txtbox = document.createElement("input");
+        txtbox.type = "text";
+        question.appendChild(txtbox);
+        $("#para :text").textinput();
+    }
+
+    function DisplayTextarea() {
+        var txtArea = document.createElement("textarea");
+        txtArea.rows = "4";
+        txtArea.id = "textArea";
+        question.appendChild(txtArea);
+        $("#para :input").textinput();
+    }
+
+    function DisplayChoice(opts) {
+        var selectMenu = document.createElement("select");
+        var option = document.createElement("option");
+        var optionText = document.createTextNode("Choose...");
+        option.setAttribute("value", "");
+        option.setAttribute("disabled", "disabled");
+        option.setAttribute("selected", "selected");
+        option.appendChild(optionText);
+        selectMenu.appendChild(option);
+
+        for (var k = 0; k < opts.length; k++) {
+            var optionDrop = document.createElement("option");
+            var optDropText = document.createTextNode(opts[k]);
+            optionDrop.setAttribute("value", k);
+            optionDrop.appendChild(optDropText);
+            selectMenu.appendChild(optionDrop);
+        }
+
+        question.appendChild(selectMenu);
+        $('select').selectmenu();
+
+    }
+
+    function DisplaySlidingOption(opts) {
+        var slider = document.createElement("input");
+
+        slider.setAttribute("type", "range");
+        slider.setAttribute("min", "1");
+        slider.setAttribute("max", opts.length);
+        slider.setAttribute("value", "1");
+        slider.setAttribute("class", "slider-style");
+        question.appendChild(slider);
+
+
+        var div = document.createElement("div");
+        div.setAttribute("id", "text-below");
+        question.appendChild(div);
+
+        var width = 100 / (opts.length - 1);
+
+
+        for (var i = 0; i < opts.length; i++) {
+            var w = width;
+            if (i === 0 || i === opts.length - 1)
+                w = width / 2;
+
+            var lbl = document.createElement("label");
+            lbl.setAttribute("width", w + "%");
+            lbl.setAttribute("class", "lbl");
+            var txt = document.createTextNode(opts[i]);
+            lbl.appendChild(txt);
+            div.appendChild(lbl);
+        }
+
+    }
+
+    function DisplayScale(obj) {
+
+        var slider = document.createElement("input");
+        slider.setAttribute("type", "range");
+        slider.setAttribute("min", obj["start"]);
+        slider.setAttribute("max", obj["end"]);
+        slider.setAttribute("step", obj["increment"])
+        slider.setAttribute("value", "1");
+        slider.setAttribute("data-highlight", "true");
         slider.setAttribute("class", "slider-style");
         question.appendChild(slider);
     }

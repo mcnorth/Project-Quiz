@@ -20,23 +20,31 @@
     <title>ProjectQuiz</title>
 </head>
 <body>
-    <div data-role="page" id="front-page">
-        
+    <div data-role="page" id="quiz-page-one">
+        <div data-role="header" id="header" data-theme="b">
+            <p id="header-text">Quiz Page</p>
+            <a href="index.html" class="ui-btn-left" data-direction="reverse">Back</a>
+        </div>
         <div data-role="main" class="ui-content">
-            <div class="ui-grid-solo ui-responsive front-content">
-                <div class="ui-block-a" >
-                    <img src="images/front-logo.png" id="front-img">
-                    <br />
-                    <a data-role="button" href="moodSurvey.html" id="btnMoodSurvay" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Mood Survey</a>
-                    <br />
-                    <a data-role="button" href="examGrade.html" id="btnExamGrade" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Exam Grade</a>
+            <div class="page-container">
+                <div data-role="content" id="questions">
+
+                    <div data-role="collapsible" data-theme="b" data-content-theme="a" data-collapsed="false" data-collapsed-icon="" data-expanded-icon="" id="questionSection">
+                        <h3 id="head3">Start</h3>
+
+                        <p id="para">
+
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+        <script>
+            getMSQuestions();
+        </script>
     </div>
     <script src="scripts/index.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
 </body>
 </html>
-
