@@ -3,33 +3,39 @@
 // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
 // and then run "window.location.reload()" in the JavaScript Console.
 
-function getMSQuestions()
-{
+$(document).ready(function () {
+    var btnMoodSurvey = $("<a href='#MoodSurveyPage' data-role='button' id='btnMoodSurvey' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Mood Survey</a>");
+    var btnExamGrade = $("<a href='#ExamGradePage' data-role='button' id='btnExamGrade' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Exam Grade</a>");
+    $("#main").append(btnMoodSurvey).trigger('create');
+    $("#main").append(btnExamGrade).trigger('create');
+
+    $("#main").on("click", "#btnMoodSurvey", GetMSQuestions);
+    $("#main").on("click", "#btnExamGrade", GetEGQuestions);
+
+});
+
+
+function GetMSQuestions() {
     var requestURL = "questions.json";
     var request = new XMLHttpRequest();
-    var question = document.getElementById("para");
-    try
-    {
+    var quiz = document.getElementById("quiz");
+    var quizContent = document.getElementById("MSmain");
+    try {
         // Opera 8.0+, Firefox, Chrome, Safari
         request = new XMLHttpRequest();
     }
-    catch (e)
-    {
+    catch (e) {
         // Internet Explorer Browsers
-        try
-        {
+        try {
             request = new ActiveXObject("Msxml2.XMLHTTP");
 
         }
-        catch (e)
-        {
-            try
-            {
+        catch (e) {
+            try {
                 request = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            catch (e)
-            {
-                
+            catch (e) {
+
                 alert(e);
                 return false;
             }
@@ -37,56 +43,47 @@ function getMSQuestions()
         }
     }
 
-    request.onreadystatechange = function ()
-    {
+    request.onreadystatechange = function () {
 
-        if (request.readyState == 4)
-        {
-            try
-            {
+        if (request.readyState == 4) {
+            try {
                 // Javascript function JSON.parse to parse JSON data
                 var jsonObj = JSON.parse(request.responseText);
 
                 // jsonObj variable now contains the data structure 
                 DisplayPage(jsonObj);
             }
-            catch (e)
-            {
+            catch (e) {
                 alert(e);
             }
-            
+
         }
     }
 
     request.open("GET", requestURL, true);
     request.send();
 
-    function DisplayPage(jsonObject)
-    {
-        if (jsonObject[0].id = "quiz01")
-        {
-            var moodSurveyQuest = jsonObject[0];
-            var collHeading = document.getElementById("head3").innerHTML;
-            var collPara = document.getElementById("para");
-            var res = collHeading.replace("Start", moodSurveyQuest["title"]);
-            document.getElementById("head3").innerHTML = res;
+    function DisplayPage(jsonObject) {
+        var header = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
 
-            for (var i = 0; i < moodSurveyQuest.questions.length; i++)
-            {
-                var questArray = moodSurveyQuest.questions[i];
+        $(quizContent).append(header).trigger('create');
 
-                for (var key in questArray)
-                {
-                    if (key == "text")
-                    {
-                        var myP = document.createElement("p");
-                        myP.setAttribute("class", "questHeading");
-                        myP.textContent = questArray[key];
-                        question.appendChild(myP);
+
+        if (jsonObject[0].id = "quiz01") {
+            var moodSurvey = jsonObject[0];
+
+            for (var i = 0; i < moodSurvey.questions.length; i++) {
+                var questArray = moodSurvey.questions[i];
+                //var question = $("#para");
+
+                for (var key in questArray) {
+                    if (key == "text") {
+                        var myP = $("<p class='questHeading'></p>");
+                        $(myP).text(questArray[key]);
+                        $("#para").append(myP).trigger('create');
                     }
 
-                    if (key == "type")
-                    {
+                    if (key == "type") {
                         var type = questArray[key];
                         switch (type) {
                             case "date": DisplayDate(questArray);
@@ -95,14 +92,12 @@ function getMSQuestions()
                                 break;
                             case "textarea": DisplayTextarea();
                                 break;
-                            case "choice": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "choice": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplayChoice(optArray);
                             }
                                 break;
-                            case "slidingoption": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "slidingoption": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplaySlidingOption(optArray);
                             }
@@ -110,8 +105,7 @@ function getMSQuestions()
                             case "scale": var optArray = questArray;
                                 DisplayScale(optArray);
                                 break;
-                            case "multiplechoice": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "multiplechoice": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplayMultipleChoice(optArray);
                             }
@@ -123,37 +117,32 @@ function getMSQuestions()
                     }
                 }
             }
-        } 
-                
-    }
-};
+        }
 
-function getEGQuestions()
-{
+    }
+
+}
+
+function GetEGQuestions() {
     var requestURL = "questions.json";
     var request = new XMLHttpRequest();
-    var question = document.getElementById("para");
-    try
-    {
+    var quiz = document.getElementById("quiz");
+    var quizContent = document.getElementById("EGmain");
+    try {
         // Opera 8.0+, Firefox, Chrome, Safari
         request = new XMLHttpRequest();
     }
-    catch (e)
-    {
+    catch (e) {
         // Internet Explorer Browsers
-        try
-        {
+        try {
             request = new ActiveXObject("Msxml2.XMLHTTP");
 
         }
-        catch (e)
-        {
-            try
-            {
+        catch (e) {
+            try {
                 request = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            catch (e)
-            {
+            catch (e) {
 
                 alert(e);
                 return false;
@@ -162,21 +151,17 @@ function getEGQuestions()
         }
     }
 
-    request.onreadystatechange = function ()
-    {
+    request.onreadystatechange = function () {
 
-        if (request.readyState == 4)
-        {
-            try
-            {
+        if (request.readyState == 4) {
+            try {
                 // Javascript function JSON.parse to parse JSON data
                 var jsonObj = JSON.parse(request.responseText);
 
                 // jsonObj variable now contains the data structure 
                 DisplayPage(jsonObj);
             }
-            catch (e)
-            {
+            catch (e) {
                 alert(e);
             }
 
@@ -186,33 +171,27 @@ function getEGQuestions()
     request.open("GET", requestURL, true);
     request.send();
 
-    function DisplayPage(jsonObject)
-    {
-        if (jsonObject[1].id = "quiz02")
-        {
-            var examGradeQuest = jsonObject[1];
-            var collHeading = document.getElementById("head3").innerHTML;
-            var collPara = document.getElementById("para");
-            var res = collHeading.replace("Start", examGradeQuest["title"]);
-            document.getElementById("head3").innerHTML = res;
+    function DisplayPage(jsonObject) {
+        var header = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
+
+        $(quizContent).append(header).trigger('create');
 
 
-            for (var i = 0; i < examGradeQuest.questions.length; i++)
-            {
-                var questArray = examGradeQuest.questions[i];
+        if (jsonObject[1].id = "quiz02") {
+            var examGrade = jsonObject[1];
 
-                for (var key in questArray)
-                {
-                    if (key == "text")
-                    {
-                        var myP = document.createElement("p");
-                        myP.setAttribute("class", "questHeading");
-                        myP.textContent = questArray[key];
-                        question.appendChild(myP);
+            for (var i = 0; i < examGrade.questions.length; i++) {
+                var questArray = examGrade.questions[i];
+                //var question = $("#para");
+
+                for (var key in questArray) {
+                    if (key == "text") {
+                        var myP = $("<p class='questHeading'></p>");
+                        $(myP).text(questArray[key]);
+                        $("#para").append(myP).trigger('create');
                     }
 
-                    if (key == "type")
-                    {
+                    if (key == "type") {
                         var type = questArray[key];
                         switch (type) {
                             case "date": DisplayDate(questArray);
@@ -221,14 +200,12 @@ function getEGQuestions()
                                 break;
                             case "textarea": DisplayTextarea();
                                 break;
-                            case "choice": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "choice": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplayChoice(optArray);
                             }
                                 break;
-                            case "slidingoption": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "slidingoption": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplaySlidingOption(optArray);
                             }
@@ -236,13 +213,11 @@ function getEGQuestions()
                             case "scale": var optArray = questArray;
                                 DisplayScale(optArray);
                                 break;
-                            case "multiplechoice": if (questArray.hasOwnProperty("options"))
-                            {
+                            case "multiplechoice": if (questArray.hasOwnProperty("options")) {
                                 var optArray = questArray["options"];
                                 DisplayMultipleChoice(optArray);
                             }
                                 break;
-
                             default:
                                 alert("Not working");
                                 break;
@@ -251,126 +226,75 @@ function getEGQuestions()
                 }
             }
         }
+
     }
-};
 
-function DisplayDate(dateObj)
-{
+}
 
-    var section = document.getElementById("para");
-    var dText = dateObj["text"];
+function DisplayDate(dateObj) {
+    var myP = $("<p></p>");
     var today = new Date();
-    var myP = document.createElement("p");
-    myP.textContent = today.toDateString();
-    section.appendChild(myP);
+    $(myP).text(today.toDateString());
+    $("#para").append(myP).trigger('create');
 }
 
-function DisplayTextbox()
-{
-    var section = document.getElementById("para");
-    var txtbox = document.createElement("input");
-    txtbox.type = "text";
-    section.appendChild(txtbox);
-    $("#para :text").textinput();
+function DisplayTextbox() {
+    var txtbox = $("<input type='text' value=''>")
+    $("#para").append(txtbox).trigger('create');
 }
 
-function DisplayTextarea()
-{
-    var section = document.getElementById("para");
-    var txtArea = document.createElement("textarea");
-    txtArea.rows = "4";
-    txtArea.id = "textArea";
-    section.appendChild(txtArea);
-    $("#para :input").textinput();
+function DisplayTextarea() {
+    var txtarea = $("<textarea></textarea>");
+    $("#para").append(txtarea).trigger('create');
 }
 
-function DisplayChoice(opts)
-{
-    var section = document.getElementById("para");
-    var selectMenu = document.createElement("select");
-    var option = document.createElement("option");
-    var optionText = document.createTextNode("Choose...");
-    option.setAttribute("value", "");
-    option.setAttribute("disabled", "disabled");
-    option.setAttribute("selected", "selected");
-    option.appendChild(optionText);
-    selectMenu.appendChild(option);
+function DisplayChoice(opts) {
+    var selectMenu = $("<select name='select-custom-21' id='select-custom-21' data-native-menu='false'><option value='choose-one' data-placeholder='true'>Choose...</option></select>");
 
-    for (var k = 0; k < opts.length; k++)
-    {
-        var optionDrop = document.createElement("option");
-        var optDropText = document.createTextNode(opts[k]);
-        optionDrop.setAttribute("value", k);
-        optionDrop.appendChild(optDropText);
-        selectMenu.appendChild(optionDrop);
+    for (var i = 0; i < opts.length; i++) {
+        var optionDrop = $("<option></option>");
+        $(optionDrop).text(opts[i]);
+        $(selectMenu).append(optionDrop);
     }
 
-    section.appendChild(selectMenu);
-    $('select').selectmenu();
-
+    $("#para").append(selectMenu).trigger('create');
 }
 
-function DisplayMultipleChoice(opts)
-{
-    for (var i = 0; i < opts.length; i++)
-    {
-        var section = document.getElementById("para");
-        var checkBox = document.createElement("input");
-        var labelCB = document.createTextNode(opts[i])
-        checkBox.setAttribute("type", "checkbox");
-        checkBox.setAttribute("value", [i])
-        section.appendChild(checkBox);
-        section.appendChild(labelCB);
+function DisplayMultipleChoice(opts) {
+    var group = $("<fieldset data-role='controlgroup'></fieldset>");
+    //$("#para").html('<fieldset data-role="controlgroup"></fieldset>');
 
+    for (var i = 0; i < opts.length; i++) {
+        var name = opts[i];
+        $(group).append('<input type="checkbox" name="' + name + '" id="id' + i + '"><label for="id' + i + '">' + name + '</label>');
     }
-
+    $("#para").append(group).trigger('create');
 }
 
-function DisplaySlidingOption(opts)
-{
-    var section = document.getElementById("para");
-    var slider = document.createElement("input");
-    slider.setAttribute("type", "range");
-    slider.setAttribute("min", "1");
-    slider.setAttribute("max", opts.length);
-    slider.setAttribute("value", "1");
-    slider.setAttribute("class", "slider-style");
-    section.appendChild(slider);
+function DisplaySlidingOption(opts) {
+    var slider = $('<input type="range" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">')
+    $("#para").append(slider).trigger('create');
 
-
-    var div = document.createElement("div");
-    div.setAttribute("id", "text-below");
-    section.appendChild(div);
+    var div = $("<div id='text-below'></div>");
 
     var width = 100 / (opts.length - 1);
-    for (var i = 0; i < opts.length; i++)
-    {
+
+    for (var i = 0; i < opts.length; i++) {
         var w = width;
         if (i === 0 || i === opts.length - 1)
             w = width / 2;
 
-        var lbl = document.createElement("label");
-        lbl.setAttribute("width", w + "%");
-        lbl.setAttribute("class", "lbl");
-        var txt = document.createTextNode(opts[i]);
-        lbl.appendChild(txt);
-        div.appendChild(lbl);
+        $(div).append("<label id='sliderLbl' style='width: " + w + "%'>" + opts[i] + "</label>");
     }
+
+    $("#para").append(div).trigger('create');
 
 }
 
-function DisplayScale(obj)
-{
-    var section = document.getElementById("para");
-    var slider = document.createElement("input");
-    slider.setAttribute("type", "range");
-    slider.setAttribute("min", obj["start"]);
-    slider.setAttribute("max", obj["end"]);
-    slider.setAttribute("step", obj["increment"])
-    slider.setAttribute("value", "1");
-    slider.setAttribute("data-highlight", "true");
-    slider.setAttribute("class", "slider-style");
-    section.appendChild(slider);
+function DisplayScale(objArray) {
+    var scale = $('<input type="range" class="ui-slider-track" data-show-value="true" name="slider-12" value="1" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">').css({ "background-color": "yellow !important" });
+    $("#para").append(scale).trigger('create');
+
 }
 
 

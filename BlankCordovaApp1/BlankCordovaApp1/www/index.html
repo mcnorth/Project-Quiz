@@ -15,29 +15,42 @@
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
     <script src="scripts/jquery-2.0.1.js"></script>
     <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
+    <script src="scripts/index.js"></script>
     
 
     <title>ProjectQuiz</title>
 </head>
 <body>
     <div data-role="page" id="front-page">
-        
+        <div data-role="header" id="header" data-theme="b">
+            <p id="header-text">Quiz Page</p>
+        </div>
         <div data-role="main" class="ui-content">
-            <div class="ui-grid-solo ui-responsive front-content">
-                <div class="ui-block-a" >
-                    <img src="images/front-logo.png" id="front-img">
-                    <br />
-                    <a data-role="button" href="moodSurvey.html" id="btnMoodSurvay" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Mood Survey</a>
-                    <br />
-                    <a data-role="button" href="examGrade.html" id="btnExamGrade" class="ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn">Exam Grade</a>
-                </div>
-                <div id="container"></div>
+            <div data-role="content" id="main">
             </div>
         </div>
-        
     </div>
-    <script src="scripts/test.js"></script>
-    <script src="scripts/index.js"></script>
+
+    <div data-role="page" id="MoodSurveyPage">
+        <div data-role="header" id="header" data-theme="b">
+            <p id="header-text">Mood Survey</p>
+        </div>
+        <div data-role="main" class="ui-content">
+            <div data-role="content" id="MSmain">
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="ExamGradePage">
+        <div data-role="header" id="header" data-theme="b">
+            <p id="header-text">Exam Grade</p>
+        </div>
+        <div data-role="main" class="ui-content">
+            <div data-role="content" id="EGmain">
+            </div>
+        </div>
+    </div>
+    
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
 </body>
