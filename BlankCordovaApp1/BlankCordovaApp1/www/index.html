@@ -21,19 +21,21 @@
     <title>ProjectQuiz</title>
 </head>
 <body>
-    <div data-role="page" id="front-page">
-        <div data-role="header" id="header" data-theme="b">
-            <p id="header-text">Quiz Page</p>
-        </div>
+    <div data-role="page" id="front-page" data-title="Front page" >
         <div data-role="main" class="ui-content">
             <div data-role="content" id="main">
+                <img src="images/front-logo.png" />
+                <a href='#MoodSurveyPage' data-role='button' id='btnMoodSurvey' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Mood Survey</a>
+                <br/>
+                <a href='#ExamGradePage' data-role='button' id='btnExamGrade' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Exam Grade</a>
             </div>
         </div>
     </div>
 
-    <div data-role="page" id="MoodSurveyPage">
-        <div data-role="header" id="header" data-theme="b">
+    <div data-role="page" id="MoodSurveyPage" data-title="Mood Survey">
+        <div data-role="header" id="header1" data-theme="b" data-rel="back">
             <p id="header-text">Mood Survey</p>
+
         </div>
         <div data-role="main" class="ui-content">
             <div data-role="content" id="MSmain">
@@ -41,8 +43,8 @@
         </div>
     </div>
 
-    <div data-role="page" id="ExamGradePage">
-        <div data-role="header" id="header" data-theme="b">
+    <div data-role="page" id="ExamGradePage" data-title="Exam Grade">
+        <div data-role="header" id="header2" data-theme="b" data-rel="back">
             <p id="header-text">Exam Grade</p>
         </div>
         <div data-role="main" class="ui-content">

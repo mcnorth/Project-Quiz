@@ -4,13 +4,14 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 
 $(document).ready(function () {
-    var btnMoodSurvey = $("<a href='#MoodSurveyPage' data-role='button' id='btnMoodSurvey' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Mood Survey</a>");
-    var btnExamGrade = $("<a href='#ExamGradePage' data-role='button' id='btnExamGrade' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Exam Grade</a>");
-    $("#main").append(btnMoodSurvey).trigger('create');
-    $("#main").append(btnExamGrade).trigger('create');
+
+    
+    
 
     $("#main").on("click", "#btnMoodSurvey", GetMSQuestions);
     $("#main").on("click", "#btnExamGrade", GetEGQuestions);
+
+    
 
 });
 
