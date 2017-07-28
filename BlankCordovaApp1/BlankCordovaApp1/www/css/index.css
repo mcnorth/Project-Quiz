@@ -18,8 +18,7 @@ body {
     
 }
 
-#main 
-{
+#frontPage {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -27,7 +26,8 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#front-page {
+#front-page 
+{
     text-align: center;
     background-color: #BD1550;
     color: white;

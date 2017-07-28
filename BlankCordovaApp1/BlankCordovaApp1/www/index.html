@@ -21,23 +21,44 @@
     <title>ProjectQuiz</title>
 </head>
 <body>
-    <div data-role="page" id="front-page">
+
+    <div data-role="page" id="front-page" data-theme="b">
+        <div data-role="navbar" >
+            <ul>
+                <li><a href="#"  id="btnMain" class="ui-btn-active">Main</a></li>
+                <li><a href="#"  id="btnMoodSurvey">Mood Survey</a></li>
+                <li><a href="#"  id="btnExamGrade">Exam Grade</a></li>
+            </ul>
+        </div>
+        <div data-role="main" class="ui-content" id="main">
+
+        </div>
         
-            <div data-role="content" id="main">
-                <img src="images/front-logo.png" />
-            </div>
-        
+        </div>
+
+
+    <!--<div data-role="page" id="front-page">
+        <div data-role="main" class="ui-content" id="main">
+            <img src="images/front-logo.png" />
+            <br />
+            <a href='#MoodSurveyPage' data-role='button' data-transition="slide" id='btnMoodSurvey' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Mood Survey</a>
+            <br />
+            <a href='#ExamGradePage' data-role='button' data-transition="slide" id='btnExamGrade' class='ui-btn ui-btn-inline ui-btn-b ui-corner-all ui-shadow custom-btn'>Exam Grade</a>
+        </div>
+       
     </div>
 
     <div data-role="page" id="MoodSurveyPage">
-        <div data-role="header" id="header" data-theme="b" data-add-back-btn="true" >
+        <div data-role="header" id="header" data-theme="b" data-add-back-btn="true"  >
             <p id="header-text">Mood Survey</p>
-            
+
         </div>
         <div data-role="main" class="ui-content">
-            <div data-role="content" id="MSmain">
+            <div data-role="content" id="MSmain" class="msContent">
             </div>
         </div>
+
+        
     </div>
 
     <div data-role="page" id="ExamGradePage">
@@ -48,7 +69,7 @@
             <div data-role="content" id="EGmain">
             </div>
         </div>
-    </div>
+    </div>-->
     
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
