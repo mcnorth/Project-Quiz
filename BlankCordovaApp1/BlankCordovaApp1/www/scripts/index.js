@@ -102,8 +102,7 @@ function DisplayPage(jsonObject, quizBut)
     {
         var page = $("<div></div>");
         var moodSurveyPage = $("#main").html(page);
-        var header = $('<div data-role="header"><h1>Quiz Title</h1></div><br />');
-        $(moodSurveyPage).append(header).trigger("create");
+        
 
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
         $(moodSurveyPage).append(headerCol).trigger("create");
@@ -111,6 +110,8 @@ function DisplayPage(jsonObject, quizBut)
         if (jsonObject[0].id = "quiz01")
         {
             var moodSurvey = jsonObject[0];
+
+          
             for (var i = 0; i < moodSurvey.questions.length; i++)
             {
                 var questArray = moodSurvey.questions[i];
@@ -124,8 +125,6 @@ function DisplayPage(jsonObject, quizBut)
         var page = $("<div></div>");
         var examGradePage = $("#main").html(page);
 
-        var header = $('<div data-role="header"><h1>Quiz Title</h1></div><br />');
-        $(examGradePage).append(header).trigger("create");
 
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
         $(examGradePage).append(headerCol).trigger("create");
@@ -162,8 +161,6 @@ function DisplayPage(jsonObject, quizBut)
                     var page = $("<div></div>");
                     var examGradePage = $("#main").html(page);
 
-                    var header = $('<div data-role="header"><h1>Quiz Title</h1></div><br />');
-                    $(examGradePage).append(header).trigger("create");
 
                     var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
                     $(examGradePage).append(headerCol).trigger("create");
