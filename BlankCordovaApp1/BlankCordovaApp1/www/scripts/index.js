@@ -5,11 +5,17 @@
 
 $(document).ready(function ()
 {
+    GetMain();
 
-    if ($("#btnMain").hasClass("ui-btn-active"))
+    $("#front-page").on("click", "#cancel", function ()
     {
         GetMain();
-    }
+    });
+
+    //if ($("#btnMain").hasClass("ui-btn-active"))
+    //{
+    //    GetMain();
+    //}
 
     $("#front-page").on("click", "#btnMoodSurvey", function ()
     {
@@ -22,7 +28,7 @@ $(document).ready(function ()
     });
 
     
-    $("#front-page").on("click", "#btnMain", GetMain);
+    //$("#front-page").on("click", "#btnMain", GetMain);
 
 });
 
@@ -30,7 +36,9 @@ function GetMain()
 {
     
     var page = $('<div id="frontPage"></div>');
-    page.append('<img src="images/front-logo.png" />');
+    page.append('<img src="images/front-logo.png" /><br />');
+    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
+    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-btn-b" id="btnExamGrade">Exam Grade</a>');
     $("#main").html(page);
 }
 
@@ -102,7 +110,8 @@ function DisplayPage(jsonObject, quizBut)
     {
         var page = $("<div></div>");
         var moodSurveyPage = $("#main").html(page);
-        
+        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Mood Survey</h1></div><br>');
+        $(moodSurveyPage).append(tb).trigger("create");
 
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
         $(moodSurveyPage).append(headerCol).trigger("create");
