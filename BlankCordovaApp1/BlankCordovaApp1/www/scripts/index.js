@@ -37,8 +37,8 @@ function GetMain()
     
     var page = $('<div id="frontPage"></div>');
     page.append('<img src="images/front-logo.png" /><br />');
-    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
-    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-btn-b" id="btnExamGrade">Exam Grade</a>');
+    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
+    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
     $("#main").html(page);
 }
 
@@ -133,7 +133,8 @@ function DisplayPage(jsonObject, quizBut)
     {
         var page = $("<div></div>");
         var examGradePage = $("#main").html(page);
-
+        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Exam Grade</h1></div><br>');
+        $(examGradePage).append(tb).trigger("create");
 
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
         $(examGradePage).append(headerCol).trigger("create");
@@ -160,7 +161,7 @@ function DisplayPage(jsonObject, quizBut)
                 else
                 {
                     
-                    var btnNext = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-btn-b" id="btnNext">Next</a>')
+                    var btnNext = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNext">Next</a>')
                     $("#para").append(btnNext).trigger('create');
                     break;
                 }
@@ -169,7 +170,8 @@ function DisplayPage(jsonObject, quizBut)
                 {
                     var page = $("<div></div>");
                     var examGradePage = $("#main").html(page);
-
+                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Exam Grade</h1></div><br>');
+                    $(examGradePage).append(tb).trigger("create");
 
                     var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
                     $(examGradePage).append(headerCol).trigger("create");
@@ -220,10 +222,11 @@ function GetElements(array)
                     DisplayChoice(optArray);
                 }
                     break;
-                case "slidingoption": if (questArray.hasOwnProperty("options"))
+                case "slidingoption": if (questArray.hasOwnProperty("options") || questArray.hasOwnProperty("optionVisuals") )
                 {
                     var optArray = questArray["options"];
-                    DisplaySlidingOption(optArray);
+                    var visuals = questArray["optionVisuals"]
+                    DisplaySlidingOption(optArray, visuals);
                 }
                     break;
                 case "scale": var optArray = questArray;
@@ -250,18 +253,21 @@ function DisplayDate(dateObj)
     var today = new Date();
     $(myP).text(today.toDateString());
     $("#para").append(myP).trigger('create');
+    $("#para").append("<hr><br>").trigger('create');
 }
 
 function DisplayTextbox()
 {
     var txtbox = $("<input type='text' value=''>")
     $("#para").append(txtbox).trigger('create');
+    $("#para").append("<br>").trigger('create');
 }
 
 function DisplayTextarea()
 {
     var txtarea = $("<textarea></textarea>");
     $("#para").append(txtarea).trigger('create');
+    $("#para").append("<br>").trigger('create');
 }
 
 function DisplayChoice(opts)
@@ -276,6 +282,7 @@ function DisplayChoice(opts)
     }
 
     $("#para").append(selectMenu).trigger('create');
+    $("#para").append("<br>").trigger('create');
 }
 
     function DisplayMultipleChoice(opts) {
@@ -287,16 +294,16 @@ function DisplayChoice(opts)
             $(group).append('<input type="checkbox" name="' + name + '" id="id' + i + '"><label for="id' + i + '">' + name + '</label>');
         }
         $("#para").append(group).trigger('create');
+        $("#para").append("<br>").trigger('create');
     }
 
-    function DisplaySlidingOption(opts) {
-        var slider = $('<input type="range" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">')
+    function DisplaySlidingOption(opts, visual)
+    {
+        var slider = $('<input type="range" id="moodSlider" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
         $("#para").append(slider).trigger('create');
 
         var div = $("<div id='text-below'></div>");
-
         var width = 100 / (opts.length - 1);
-
         for (var i = 0; i < opts.length; i++) {
             var w = width;
             if (i === 0 || i === opts.length - 1)
@@ -306,12 +313,22 @@ function DisplayChoice(opts)
         }
 
         $("#para").append(div).trigger('create');
+        $("#para").append("<br>").trigger('create');
 
     }
 
-    function DisplayScale(objArray) {
-        var scale = $('<input type="range" class="ui-slider-track" data-show-value="true" name="slider-12" value="1" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">').css({ "background-color": "yellow !important" });
+    function DisplayScale(objArray)
+    {
+        //var para = document.getElementById("para");
+        //var scale = document.createElement("input");
+        //scale.setAttribute("type", "range");
+        //para.appendChild(scale);
+
+
+        var scale = $('<input type="range" class="scaleSlider ui-slider-track" data-show-value="true" name="slider-12" value="1" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
+
         $("#para").append(scale).trigger('create');
+        $("#para").append("<br>").trigger('create');
 
     }
 
