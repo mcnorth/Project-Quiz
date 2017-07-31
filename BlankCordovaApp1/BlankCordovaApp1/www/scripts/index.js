@@ -7,34 +7,30 @@ $(document).ready(function ()
 {
     GetMain();
 
+    //back button
     $("#front-page").on("click", "#cancel", function ()
     {
         GetMain();
     });
 
-    //if ($("#btnMain").hasClass("ui-btn-active"))
-    //{
-    //    GetMain();
-    //}
-
+    //mood survey button
     $("#front-page").on("click", "#btnMoodSurvey", function ()
     {
         GetJsonFile($(this).attr('id'));
     });
 
+    //exam grade button
     $("#front-page").on("click", "#btnExamGrade", function ()
     {
         GetJsonFile($(this).attr('id'));
     });
 
-    
-    //$("#front-page").on("click", "#btnMain", GetMain);
 
 });
 
+//displays the first page
 function GetMain()
-{
-    
+{  
     var page = $('<div id="frontPage"></div>');
     page.append('<img src="images/front-logo.png" /><br />');
     page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
@@ -42,10 +38,10 @@ function GetMain()
     $("#main").html(page);
 }
 
+//read the json file with try catch for errors
 function GetJsonFile(butID)
 {
     var quizBtn = butID;
-    
     var requestURL = "questions.json";
     var request = new XMLHttpRequest();
 
@@ -103,24 +99,30 @@ function GetJsonFile(butID)
     request.send();
 }
 
+function createBlankPage()
+{
 
+}
+
+
+//display the quiz page according to json
 function DisplayPage(jsonObject, quizBut)
 {
     if (quizBut == "btnMoodSurvey")
     {
+        //add header
         var page = $("<div></div>");
         var moodSurveyPage = $("#main").html(page);
-        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Mood Survey</h1></div><br>');
+        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Mood Survey</h1></div><br>');
         $(moodSurveyPage).append(tb).trigger("create");
 
+        //add quiz questions
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
         $(moodSurveyPage).append(headerCol).trigger("create");
 
         if (jsonObject[0].id = "quiz01")
         {
             var moodSurvey = jsonObject[0];
-
-          
             for (var i = 0; i < moodSurvey.questions.length; i++)
             {
                 var questArray = moodSurvey.questions[i];
@@ -145,7 +147,8 @@ function DisplayPage(jsonObject, quizBut)
         { 
             var examGrade = jsonObject[1];
             var pageArray = examGrade.questionsPerPage;
-            
+
+            //display questions per page as per json array
             var count = 0;
 
             for (var i = 0; i < examGrade.questions.length; i++)
@@ -194,6 +197,7 @@ function DisplayPage(jsonObject, quizBut)
     }
 }
 
+//get teh element types and display headings
 function GetElements(array)
 {
     var questArray = array;
@@ -245,8 +249,7 @@ function GetElements(array)
     }
 }
 
-
-
+//display elements for each json object
 function DisplayDate(dateObj)
 {
     var myP = $("<p></p>");
@@ -287,7 +290,6 @@ function DisplayChoice(opts)
 
     function DisplayMultipleChoice(opts) {
         var group = $("<fieldset data-role='controlgroup'></fieldset>");
-        //$("#para").html('<fieldset data-role="controlgroup"></fieldset>');
 
         for (var i = 0; i < opts.length; i++) {
             var name = opts[i];
@@ -299,8 +301,21 @@ function DisplayChoice(opts)
 
     function DisplaySlidingOption(opts, visual)
     {
-        var slider = $('<input type="range" id="moodSlider" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
+        var slider = $('<input type="range" id="mySlider" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
         $("#para").append(slider).trigger('create');
+
+        if (visual.length > 0 && visual.length == opts.length)
+        {
+            $("#mySlider").change(function ()
+            {
+                sliderVal = $(this).val();
+
+                var thumb = visual[sliderVal - 1];
+                $(this).next().css("background-color", "thumb");
+
+            });
+            
+        }
 
         var div = $("<div id='text-below'></div>");
         var width = 100 / (opts.length - 1);
@@ -315,24 +330,47 @@ function DisplayChoice(opts)
         $("#para").append(div).trigger('create');
         $("#para").append("<br>").trigger('create');
 
+        
+
     }
 
     function DisplayScale(objArray)
     {
-        //var para = document.getElementById("para");
-        //var scale = document.createElement("input");
-        //scale.setAttribute("type", "range");
-        //para.appendChild(scale);
+        var inputC = $('<input type="range" name="slider" id="scaleSlider" data-show-value="true"  value="0" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
+        $("#para").append(inputC).trigger('create');
 
+        if (objArray.hasOwnProperty("gradientStart") && objArray.hasOwnProperty("gradientEnd"))
+        { 
+            var firstColour = objArray["gradientStart"];
+            var lastColour = objArray["gradientEnd"];
 
-        var scale = $('<input type="range" class="scaleSlider ui-slider-track" data-show-value="true" name="slider-12" value="1" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
+            var firstR = parseInt(firstColour.slice(1, 3), 16);
+            var firstG = parseInt(firstColour.slice(3, 5), 16);
+            var firstB = parseInt(firstColour.slice(5, 7), 16);
 
-        $("#para").append(scale).trigger('create');
-        $("#para").append("<br>").trigger('create');
+            var lastR = parseInt(lastColour.slice(1, 3), 16);
+            var lastG = parseInt(lastColour.slice(3, 5), 16);
+            var lastB = parseInt(lastColour.slice(5, 7), 16);
 
+            $("#scaleSlider").change(function ()
+            {
+                //get the value of the scale and make it a percentage of the max value
+                scaleVal = $(this).val() / objArray["end"];
+
+                //calculate the values of the scale at what the value is
+                valueR = firstR + (lastR - firstR) * scaleVal;
+                valueG = firstG + (lastG - firstG) * scaleVal;
+                valueB = firstB + (lastB - firstB) * scaleVal;
+
+                //scale background colour
+                $(this).next().css("background-color", "rgb(" + valueR + "," + valueG + "," + valueB + ")");
+
+            });
+        }
+ 
     }
 
-    
+   
 
 
 
