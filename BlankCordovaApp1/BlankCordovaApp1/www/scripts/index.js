@@ -99,10 +99,6 @@ function GetJsonFile(butID)
     request.send();
 }
 
-function createBlankPage()
-{
-
-}
 
 
 //display the quiz page according to json
@@ -135,7 +131,7 @@ function DisplayPage(jsonObject, quizBut)
     {
         var page = $("<div></div>");
         var examGradePage = $("#main").html(page);
-        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Exam Grade</h1></div><br>');
+        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Exam Grade</h1></div><br>');
         $(examGradePage).append(tb).trigger("create");
 
         var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
@@ -173,7 +169,7 @@ function DisplayPage(jsonObject, quizBut)
                 {
                     var page = $("<div></div>");
                     var examGradePage = $("#main").html(page);
-                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a><h1>Exam Grade</h1></div><br>');
+                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Exam Grade</h1></div><br>');
                     $(examGradePage).append(tb).trigger("create");
 
                     var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
@@ -301,19 +297,32 @@ function DisplayChoice(opts)
 
     function DisplaySlidingOption(opts, visual)
     {
-        var slider = $('<input type="range" id="mySlider" data-highlight="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
+
+        //var sliderDiv = $('<div id="mySlider"></div>');
+        //$("#para").append(sliderDiv).trigger('create');
+
+        //var div = document.getElementById("mySlider");
+
+        var slider = $('<input type="range" id="mySlider" data-show-value="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
         $("#para").append(slider).trigger('create');
 
+        
+
+            
         if (visual.length > 0 && visual.length == opts.length)
         {
-            $("#mySlider").change(function ()
-            {
-                sliderVal = $(this).val();
+            var div = $("<div id='vis-below'></div>");
+            var width = 100 / (visual.length - 1);
+            for (var i = 0; i < visual.length; i++) {
+                var w = width;
+                if (i === 0 || i === visual.length - 1)
+                    w = width / 2;
 
-                var thumb = visual[sliderVal - 1];
-                $(this).next().css("background-color", "thumb");
+                $(div).append("<label id='sliderLbl' style='width: " + w + "%'>" + visual[i] + "</label>");
+            }
 
-            });
+            $("#para").append(div).trigger('create');
+
             
         }
 
@@ -341,6 +350,10 @@ function DisplayChoice(opts)
 
         if (objArray.hasOwnProperty("gradientStart") && objArray.hasOwnProperty("gradientEnd"))
         { 
+            /************************************************************
+            the concept behind this snippet was posted by AJFarkas on https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
+            modified to suit my project
+            *****************************************************************************************************************************/
             var firstColour = objArray["gradientStart"];
             var lastColour = objArray["gradientEnd"];
 
@@ -352,8 +365,19 @@ function DisplayChoice(opts)
             var lastG = parseInt(lastColour.slice(3, 5), 16);
             var lastB = parseInt(lastColour.slice(5, 7), 16);
 
+            /************************************************************
+            CONCEPT ENDS HERE
+            ***************************************************************/
+
+
             $("#scaleSlider").change(function ()
             {
+
+                /************************************************************
+            the concept behind this snippet was posted by ntdb on https://stackoverflow.com/questions/21150713/animate-color-with-jquery-mobile-slider
+            modified to suit my project
+            *****************************************************************************************************************************/
+
                 //get the value of the scale and make it a percentage of the max value
                 scaleVal = $(this).val() / objArray["end"];
 
@@ -364,6 +388,10 @@ function DisplayChoice(opts)
 
                 //scale background colour
                 $(this).next().css("background-color", "rgb(" + valueR + "," + valueG + "," + valueB + ")");
+
+                /************************************************************
+            CONCEPT ENDS HERE
+            ***************************************************************/
 
             });
         }
