@@ -7,13 +7,20 @@ $(document).ready(function ()
 {
     GetSplash();
 
-    //GetMain();
+    
 
     //back button
     $("#front-page").on("click", "#cancel", function ()
     {
         GetMain();
     });
+
+    //back button
+    $("#front-page").on("click", "#btnPlay", function () {
+        GetMain();
+    });
+
+
 
     //mood survey button
     $("#front-page").on("click", "#btnMoodSurvey", function ()
@@ -38,19 +45,35 @@ function GetSplash()
     $("#main").html(page);
 
     var hideSplash = function () {
-        $.mobile.changePage(GetMain());
+        $.mobile.changePage(GetSignUp());
     };
     setTimeout(hideSplash, 4000);
 }
 
-//displays the first page
-function GetMain()
+//displays the signup/play page
+function GetSignUp()
 {  
-    var page = $('<div id="frontPage"></div>');
-    page.append('<img src="images/front-logo.png" /><br />');
-    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
-    page.append('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
+    var page = $('<div id="signupPage"></div>');
     $("#main").html(page);
+    var div = $('<div id="signupPage-content"></div>');
+    div.append('<img src="images/new-logo-front.png" /><br /><br />');
+    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnSignUp">Sign Up</a>');
+    div.append('<a href="#" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-btn-b" id="btnPlay">Play</a>');
+    $("#signupPage").html(div);
+    
+}
+
+//displays the main page
+function GetMain()
+{
+    var page = $('<div id="frontPage"></div>');
+    $("#main").html(page);
+    var div = $('<div id="frontPage-content"></div>');
+    div.append('<img src="images/new-logo-front.png" /><br /><br />');
+    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
+    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
+    $("#frontPage").html(div);
+
 }
 
 //read the json file with try catch for errors
