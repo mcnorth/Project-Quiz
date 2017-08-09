@@ -5,7 +5,9 @@
 
 $(document).ready(function ()
 {
-    GetMain();
+    GetSplash();
+
+    //GetMain();
 
     //back button
     $("#front-page").on("click", "#cancel", function ()
@@ -27,6 +29,19 @@ $(document).ready(function ()
 
 
 });
+
+//displays the splash
+function GetSplash()
+{
+    var page = $('<div id="splashPage"></div>');
+    page.append('<img src="images/kapps.png" /><br />');
+    $("#main").html(page);
+
+    var hideSplash = function () {
+        $.mobile.changePage(GetMain());
+    };
+    setTimeout(hideSplash, 4000);
+}
 
 //displays the first page
 function GetMain()

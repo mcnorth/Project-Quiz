@@ -28,10 +28,18 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#front-page 
-{
+#splashPage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    
+}
+
+#front-page {
     text-align: center;
-    background-color: #BD1550;
+    background-color: white;
     color: white;
     font-family: replayRounded;
     height: 100%;
