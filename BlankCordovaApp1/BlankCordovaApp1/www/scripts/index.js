@@ -202,10 +202,53 @@ function DisplayPage(jsonObject, quizBut)
         if (jsonObject[0].id = "quiz01")
         {
             var moodSurvey = jsonObject[0];
+            let counter = 1;
+            var idCount = 0;
             for (var i = 0; i < moodSurvey.questions.length; i++)
             {
                 var questArray = moodSurvey.questions[i];
-                GetElements(questArray);   
+                if (idCount == 0)
+                {
+                    GetElements(questArray);
+                    idCount++;
+                    var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
+                    $("#para").append(btnNextQ).trigger('create');
+                    
+                }
+                else
+                {
+                    break;
+                }
+                
+                
+
+                $("#front-page").on("click", "#btnNextQ", function () {
+                    var page = $("<div></div>");
+                    var moodSurveyPage = $("#main").html(page);
+                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Mood Survey</h1></div><br>');
+                    $(moodSurveyPage).append(tb).trigger("create");
+
+                    var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
+                    $(moodSurveyPage).append(headerCol).trigger("create");
+
+                    for (var i = 0; i < moodSurvey.questions.length; i++) {
+                        var qtArray = moodSurvey.questions[i];
+                        if (qtArray["id"] == idCount + 1)
+                        {
+                            GetElements(qtArray);
+                            idCount++;
+                            var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
+                            $("#para").append(btnNextQ).trigger('create');
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                });
+                   
             }
         }
     }
