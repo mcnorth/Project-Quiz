@@ -30,6 +30,11 @@ $(document).ready(function ()
         AccountSignUp();
     });
 
+    //back to main from quiz page
+    $("#front-page").on("click", "#backToMain", function () {
+        GetMain();
+    });
+
 
 
     //mood survey button
@@ -189,15 +194,17 @@ function DisplayPage(jsonObject, quizBut)
 {
     if (quizBut == "btnMoodSurvey")
     {
-        //add header
-        var page = $("<div></div>");
-        var moodSurveyPage = $("#main").html(page);
-        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Mood Survey</h1></div><br>');
-        $(moodSurveyPage).append(tb).trigger("create");
+        var page = $('<div id="quizPage"></div>');
+        var quizPage = $("#main").html(page);
+        var quizPageHead = $('<div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div>');
+        $(quizPage).append(quizPageHead).trigger("create");
 
-        //add quiz questions
-        var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
-        $(moodSurveyPage).append(headerCol).trigger("create");
+        var div = $('<div id="quizPage-content"></div>');
+        var panel = $('<div id="panelGrey"></div>');
+        $(div).append(panel).trigger("create");
+        $("#quizPage").append(div).trigger("create");
+        
+
 
         if (jsonObject[0].id = "quiz01")
         {
@@ -212,7 +219,7 @@ function DisplayPage(jsonObject, quizBut)
                     GetElements(questArray);
                     idCount++;
                     var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
-                    $("#para").append(btnNextQ).trigger('create');
+                    $("#panelGrey").append(btnNextQ).trigger('create');
                     
                 }
                 else
@@ -222,14 +229,18 @@ function DisplayPage(jsonObject, quizBut)
                 
                 
 
-                $("#front-page").on("click", "#btnNextQ", function () {
-                    var page = $("<div></div>");
-                    var moodSurveyPage = $("#main").html(page);
-                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Mood Survey</h1></div><br>');
-                    $(moodSurveyPage).append(tb).trigger("create");
+                $("#front-page").on("click", "#btnNextQ", function ()
+                {
+                    var page = $('<div id="quizPage"></div>');
+                    var quizPage = $("#main").html(page);
+                    var quizPageHead = $('<div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div>');
+                    $(quizPage).append(quizPageHead).trigger("create");
 
-                    var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
-                    $(moodSurveyPage).append(headerCol).trigger("create");
+                    var div = $('<div id="quizPage-content"></div>');
+                    var panel = $('<div id="panelGrey"></div>');
+                    $(div).append(panel).trigger("create");
+                    $("#quizPage").append(div).trigger("create");
+                    
 
                     for (var i = 0; i < moodSurvey.questions.length; i++) {
                         var qtArray = moodSurvey.questions[i];
@@ -238,7 +249,7 @@ function DisplayPage(jsonObject, quizBut)
                             GetElements(qtArray);
                             idCount++;
                             var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
-                            $("#para").append(btnNextQ).trigger('create');
+                            $("#panelGrey").append(btnNextQ).trigger('create');
                             break;
                         }
                         else
@@ -330,7 +341,7 @@ function GetElements(array)
         {
             var myP = $("<p class='questHeading'></p>");
             $(myP).text(questArray[key]);
-            $("#para").append(myP).trigger('create');
+            $("#panelGrey").append(myP).trigger('create');
         }
         if (key == "type")
         {
@@ -377,49 +388,67 @@ function DisplayDate(dateObj)
     var myP = $("<p></p>");
     var today = new Date();
     $(myP).text(today.toDateString());
-    $("#para").append(myP).trigger('create');
-    $("#para").append("<hr><br>").trigger('create');
+    $("#panelGrey").append(myP).trigger('create');
+    $("#panelGrey").append("<hr><br>").trigger('create');
 }
 
 function DisplayTextbox()
 {
     var txtbox = $("<input type='text' value=''>")
-    $("#para").append(txtbox).trigger('create');
-    $("#para").append("<br>").trigger('create');
+    $("#panelGrey").append(txtbox).trigger('create');
+    $("#panelGrey").append("<br>").trigger('create');
 }
 
 function DisplayTextarea()
 {
     var txtarea = $("<textarea></textarea>");
-    $("#para").append(txtarea).trigger('create');
-    $("#para").append("<br>").trigger('create');
+    $("#panelGrey").append(txtarea).trigger('create');
+    $("#panelGrey").append("<br>").trigger('create');
 }
 
 function DisplayChoice(opts)
 {
-    var selectMenu = $("<select name='select-custom-21' id='select-custom-21' data-native-menu='false'><option value='choose-one' data-placeholder='true'>Choose...</option></select>");
+    var selectMenu = document.createElement("select");
+
+    var panel = document.getElementById("panelGrey");
 
     for (var i = 0; i < opts.length; i++)
     {
-        var optionDrop = $("<option></option>");
-        $(optionDrop).text(opts[i]);
-        $(selectMenu).append(optionDrop);
+        var optionDrop = document.createElement("option");
+        var txtNode = document.createTextNode(opts[i]);
+        optionDrop.appendChild(txtNode);
+        selectMenu.appendChild(optionDrop);
     }
 
-    $("#para").append(selectMenu).trigger('create');
-    $("#para").append("<br>").trigger('create');
+    panel.appendChild(selectMenu);
+    
+
+    //var selectMenu = $("<select name='select-custom-21' id='select-custom-21' data-native-menu='false'><option value='choose-one' data-placeholder='true'>Choose...</option></select>");
+    //$("#panelGrey").append(selectMenu).trigger('create');
+
+    //for (var i = 0; i < opts.length; i++)
+    //{
+    //    var optionDrop = $("<option></option>");
+    //    $(optionDrop).text(opts[i]);
+    //    $(selectMenu).append(optionDrop);
+    //}
+
+    //$("#panelGrey").append(selectMenu).trigger('create');
+    //$("#panelGrey").append("<br>").trigger('create');
 }
 
-    function DisplayMultipleChoice(opts) {
+function DisplayMultipleChoice(opts)
+{
         var group = $("<fieldset data-role='controlgroup'></fieldset>");
 
-        for (var i = 0; i < opts.length; i++) {
+        for (var i = 0; i < opts.length; i++)
+        {
             var name = opts[i];
             $(group).append('<input type="checkbox" name="' + name + '" id="id' + i + '"><label for="id' + i + '">' + name + '</label>');
         }
-        $("#para").append(group).trigger('create');
-        $("#para").append("<br>").trigger('create');
-    }
+        $("#panelGrey").append(group).trigger('create');
+        $("#panelGrey").append("<br>").trigger('create');
+}
 
     function DisplaySlidingOption(opts, visual)
     {
@@ -430,7 +459,7 @@ function DisplayChoice(opts)
         //var div = document.getElementById("mySlider");
 
         var slider = $('<input type="range" id="mySlider" data-show-value="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
-        $("#para").append(slider).trigger('create');
+        $("#panelGrey").append(slider).trigger('create');
 
         
 
@@ -447,7 +476,7 @@ function DisplayChoice(opts)
                 $(div).append("<label id='sliderLbl' style='width: " + w + "%'>" + visual[i] + "</label>");
             }
 
-            $("#para").append(div).trigger('create');
+            $("#panelGrey").append(div).trigger('create');
 
             
         }
@@ -462,8 +491,8 @@ function DisplayChoice(opts)
             $(div).append("<label id='sliderLbl' style='width: " + w + "%'>" + opts[i] + "</label>");
         }
 
-        $("#para").append(div).trigger('create');
-        $("#para").append("<br>").trigger('create');
+        $("#panelGrey").append(div).trigger('create');
+        $("#panelGrey").append("<br>").trigger('create');
 
         
 
@@ -472,7 +501,7 @@ function DisplayChoice(opts)
     function DisplayScale(objArray)
     {
         var inputC = $('<input type="range" name="slider" id="scaleSlider" data-show-value="true"  value="0" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
-        $("#para").append(inputC).trigger('create');
+        $("#panelGrey").append(inputC).trigger('create');
 
         if (objArray.hasOwnProperty("gradientStart") && objArray.hasOwnProperty("gradientEnd"))
         { 
