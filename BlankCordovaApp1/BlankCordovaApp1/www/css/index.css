@@ -71,11 +71,90 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
+#accountSignUpPage {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-image: url(../images/bg-front.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /*background-color: black;*/
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#accountSignUpPage-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#panelGrey {
+    background: #36464e;
+    max-width: 300px;
+    height: auto;
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+}
+
+#userName 
+{
+    background-color: white !important;
+    font-size: 16px !important;
+    color: black !important;
+    background-image: url('../images/userName-img.png') !important;
+    background-position: 0px 0px !important;
+    background-repeat: no-repeat !important;
+    padding: 0px 0px 0px 50px !important;
+}
+
+#passWord 
+{
+    background-color: white !important;
+    font-size: 16px !important;
+    color: black !important;
+    background-image: url('../images/passWord-img.png') !important;
+    background-position: 0px 0px !important;
+    background-repeat: no-repeat !important;
+    padding: 0px 0px 0px 50px !important;
+}
+
+#retype 
+{
+    background-color: white !important;
+    font-size: 16px !important;
+    color: black !important;
+    background-image: url('../images/passWord-img.png') !important;
+    background-position: 0px 0px !important;
+    background-repeat: no-repeat !important;
+    padding: 0px 0px 0px 50px !important;
+}
+
 #btnSignUp {
     background-color: #EE524F !important;
 }
 
 #btnPlay {
+    background-color: #EE524F !important;
+}
+
+#btnMoodSurvey {
+    background-color: #EE524F !important;
+}
+
+#btnExamGrade {
+    background-color: #EE524F !important;
+}
+
+#btnSubmit {
     background-color: #EE524F !important;
 }
 

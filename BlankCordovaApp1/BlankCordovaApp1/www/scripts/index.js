@@ -15,9 +15,19 @@ $(document).ready(function ()
         GetMain();
     });
 
-    //back button
+    //play quiz button
     $("#front-page").on("click", "#btnPlay", function () {
         GetMain();
+    });
+
+    //back button on main to go back to signup page
+    $("#front-page").on("click", "#backToSignUp", function () {
+        GetSignUp();
+    });
+
+    //sign up button
+    $("#front-page").on("click", "#btnSignUp", function () {
+        AccountSignUp();
     });
 
 
@@ -59,16 +69,51 @@ function GetSignUp()
     div.append('<img src="images/new-logo-front.png" /><br /><br />');
     div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnSignUp">Sign Up</a>');
     div.append('<a href="#" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-btn-b" id="btnPlay">Play</a>');
-    $("#signupPage").html(div);
+    $("#signupPage").html(div);    
+}
+
+//displays the sign up page for an account
+function AccountSignUp() {
+    var page = $('<div id="accountSignUpPage"></div>');
+    var signUpPage = $("#main").html(page);
+    var signupHead = $('<div data-role="header" data-theme="a"><a href="#" id="backToSignUp" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Sign Up</h1></div>');
+    $(signUpPage).append(signupHead).trigger("create");
+
+    var div = $('<div id="accountSignUpPage-content"></div>');
+    var logo = $('<img src="images/new-logo-front.png" /><br /><br />');
+    $(div).append(logo).trigger("create");
+    $("#accountSignUpPage").append(div).trigger("create");
     
+
+    var panel = $('<div id="panelGrey"></div>');
+    $("#accountSignUpPage-content").append(panel).trigger("create");
+
+    var txtUserName = $("<input type='text' id='userName' value=''placeholder='username'>");
+    $("#panelGrey").append(txtUserName).trigger("create");
+
+    var txtPassWord = $("<input type='text' id='passWord' value=''placeholder='password'><br/>");
+    $("#panelGrey").append(txtPassWord).trigger("create");
+
+    var hr = $("<hr><br/>");
+    $("#panelGrey").append(hr).trigger("create");
+
+    var txtRetype = $("<input type='text' id='retype' value=''placeholder='Retype Password'>");
+    $("#panelGrey").append(txtRetype).trigger("create");
+
+    var submit = $('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnSubmit">Submit</a>');
+    $("#panelGrey").append(submit).trigger("create");
+
 }
 
 //displays the main page
 function GetMain()
 {
-    var page = $('<div id="frontPage"></div>');
-    $("#main").html(page);
-    var div = $('<div id="frontPage-content"></div>');
+    var page = $('<div id="frontPage"></div>'); 
+    var playPage = $("#main").html(page);
+    var headPlay = $('<div data-role="header" data-theme="a"><a href="#" id="backToSignUp" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Choose a quiz</h1></div>');
+    $(playPage).append(headPlay).trigger("create");
+
+    var div = $('<div id="frontPage-content"></div>');  
     div.append('<img src="images/new-logo-front.png" /><br /><br />');
     div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
     div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
