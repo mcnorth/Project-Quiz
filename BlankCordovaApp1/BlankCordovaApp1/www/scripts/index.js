@@ -56,7 +56,7 @@ $(document).ready(function ()
 function GetSplash()
 {
     var page = $('<div id="splashPage"></div>');
-    page.append('<img src="images/kapps.png" /><br />');
+    page.append('<img id="splashImg" src="images/kapps.png" /><br />');
     $("#main").html(page);
 
     var hideSplash = function () {
@@ -67,7 +67,9 @@ function GetSplash()
 
 //displays the signup/play page
 function GetSignUp()
-{  
+{
+    
+
     var page = $('<div id="signupPage"></div>');
     $("#main").html(page);
     var div = $('<div id="signupPage-content"></div>');
@@ -120,7 +122,7 @@ function GetMain()
 
     var div = $('<div id="frontPage-content"></div>');  
     div.append('<img src="images/new-logo-front.png" /><br /><br />');
-    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a><br />');
+    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a>');
     div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
     $("#frontPage").html(div);
 
@@ -194,10 +196,9 @@ function DisplayPage(jsonObject, quizBut)
 {
     if (quizBut == "btnMoodSurvey")
     {
-        var page = $('<div id="quizPage"></div>');
+        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div></div>');
         var quizPage = $("#main").html(page);
-        var quizPageHead = $('<div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div>');
-        $(quizPage).append(quizPageHead).trigger("create");
+        
 
         var div = $('<div id="quizPage-content"></div>');
         var panel = $('<div id="panelGrey"></div>');
@@ -231,10 +232,9 @@ function DisplayPage(jsonObject, quizBut)
 
                 $("#front-page").on("click", "#btnNextQ", function ()
                 {
-                    var page = $('<div id="quizPage"></div>');
+                    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div></div>');
                     var quizPage = $("#main").html(page);
-                    var quizPageHead = $('<div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div>');
-                    $(quizPage).append(quizPageHead).trigger("create");
+
 
                     var div = $('<div id="quizPage-content"></div>');
                     var panel = $('<div id="panelGrey"></div>');
@@ -277,13 +277,16 @@ function DisplayPage(jsonObject, quizBut)
 
     if (quizBut == "btnExamGrade")
     {
-        var page = $("<div></div>");
-        var examGradePage = $("#main").html(page);
-        var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Exam Grade</h1></div><br>');
-        $(examGradePage).append(tb).trigger("create");
+        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+        var quizPage = $("#main").html(page);
 
-        var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
-        $(examGradePage).append(headerCol).trigger("create");
+        var div = $('<div id="quizPageExam-content"></div>');
+        $("#quizPage").append(div).trigger("create");
+        var panel = $('<div id="panelGrey"></div>');
+        $(div).append(panel).trigger("create");
+
+        
+        
 
         
 
@@ -309,19 +312,19 @@ function DisplayPage(jsonObject, quizBut)
                 {
                     
                     var btnNext = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNext">Next</a>')
-                    $("#para").append(btnNext).trigger('create');
+                    $("#panelGrey").append(btnNext).trigger('create');
                     break;
                 }
 
                 $("#front-page").on("click", "#btnNext", function ()
                 {
-                    var page = $("<div></div>");
-                    var examGradePage = $("#main").html(page);
-                    var tb = $('<div data-role="header"><a href="#" id="cancel" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Cancel</a><h1>Exam Grade</h1></div><br>');
-                    $(examGradePage).append(tb).trigger("create");
+                    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+                    var quizPage = $("#main").html(page);
 
-                    var headerCol = $("<div data-role='collapsible' data-theme='b' data-content-theme='a' data-collapsed='false' data-collapsed-icon='' data-expanded-icon='' id='questionSection'><h3 id='head3'>Start</h3><p id='para'></p></div>");
-                    $(examGradePage).append(headerCol).trigger("create");
+                    var div = $('<div id="quizPageExam-content"></div>');
+                    $("#quizPage").append(div).trigger("create");
+                    var panel = $('<div id="panelGrey"></div>');
+                    $(div).append(panel).trigger("create");
 
                     for (var i = 0; i < examGrade.questions.length; i++)
                     {
@@ -360,30 +363,36 @@ function GetElements(array)
             switch (type) {
                 case "date": DisplayDate(questArray);
                     break;
-                case "textbox": DisplayTextbox();
+                case "textbox": var textboxID = questArray["id"];
+                    DisplayTextbox(textboxID);
                     break;
-                case "textarea": DisplayTextarea();
+                case "textarea": var textareaID = questArray["id"];
+                    DisplayTextarea(textareaID);
                     break;
                 case "choice": if (questArray.hasOwnProperty("options"))
                 {
+                    var selectID = questArray["id"];
                     var optArray = questArray["options"];
-                    DisplayChoice(optArray);
+                    DisplayChoice(optArray, selectID);
                 }
                     break;
                 case "slidingoption": if (questArray.hasOwnProperty("options") || questArray.hasOwnProperty("optionVisuals") )
                 {
+                    var optionID = questArray["id"];
                     var optArray = questArray["options"];
                     var visuals = questArray["optionVisuals"]
-                    DisplaySlidingOption(optArray, visuals);
+                    DisplaySlidingOption(optArray, visuals, optionID);
                 }
                     break;
-                case "scale": var optArray = questArray;
-                    DisplayScale(optArray);
+                case "scale": var scaleID = questArray["id"];
+                    var optArray = questArray;
+                    DisplayScale(optArray, scaleID);
                     break;
                 case "multiplechoice": if (questArray.hasOwnProperty("options"))
                 {
+                    var mcID = questArray["id"];
                     var optArray = questArray["options"];
-                    DisplayMultipleChoice(optArray);
+                    DisplayMultipleChoice(optArray, mcID);
                 }
                     break;
                 default: alert("Not working");
@@ -403,23 +412,24 @@ function DisplayDate(dateObj)
     $("#panelGrey").append("<hr><br>").trigger('create');
 }
 
-function DisplayTextbox()
+function DisplayTextbox(textboxID)
 {
-    var txtbox = $("<input type='text' value=''>")
+    var txtbox = $("<input type='text' id='textbox"+textboxID+"' value=''>");
     $("#panelGrey").append(txtbox).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
 }
 
-function DisplayTextarea()
+function DisplayTextarea(textareaID)
 {
-    var txtarea = $("<textarea></textarea>");
+    var txtarea = $("<textarea id='textarea"+textareaID+"'></textarea>");
     $("#panelGrey").append(txtarea).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
 }
 
-function DisplayChoice(opts)
+function DisplayChoice(opts, selectID)
 {
     var selectMenu = document.createElement("select");
+    selectMenu.setAttribute('id', 'select'+selectID)
 
     var panel = document.getElementById("panelGrey");
 
@@ -461,7 +471,7 @@ function DisplayMultipleChoice(opts)
         $("#panelGrey").append("<br>").trigger('create');
 }
 
-    function DisplaySlidingOption(opts, visual)
+function DisplaySlidingOption(opts, visual, optionID)
     {
 
         //var sliderDiv = $('<div id="mySlider"></div>');
@@ -469,7 +479,7 @@ function DisplayMultipleChoice(opts)
 
         //var div = document.getElementById("mySlider");
 
-        var slider = $('<input type="range" id="mySlider" data-show-value="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
+        var slider = $('<input type="range" id="sliderOptions'+optionID+'"data-show-value="true" name="slider-12" value="2" min="1" max="' + opts.length + '">');
         $("#panelGrey").append(slider).trigger('create');
 
         
@@ -509,9 +519,9 @@ function DisplayMultipleChoice(opts)
 
     }
 
-    function DisplayScale(objArray)
-    {
-        var inputC = $('<input type="range" name="slider" id="scaleSlider" data-show-value="true"  value="0" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
+function DisplayScale(objArray, scaleID)
+{
+    var inputC = $('<input type="range" class="scale'+scaleID+'"name="slider" id="scaleSlider" data-show-value="true"  value="0" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
         $("#panelGrey").append(inputC).trigger('create');
 
         if (objArray.hasOwnProperty("gradientStart") && objArray.hasOwnProperty("gradientEnd"))
