@@ -242,9 +242,19 @@ function DisplayPage(jsonObject, quizBut)
                     $("#quizPage").append(div).trigger("create");
                     
 
-                    for (var i = 0; i < moodSurvey.questions.length; i++) {
+                    for (var i = 0; i < moodSurvey.questions.length; i++)
+                    {
                         var qtArray = moodSurvey.questions[i];
-                        if (qtArray["id"] == idCount + 1)
+
+                        if (qtArray["id"] == idCount + 1 && idCount + 1 == moodSurvey.questions.length)
+                        {
+                            GetElements(qtArray);
+                            idCount++;
+                            var btnTotal = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnTotal">Score</a>')
+                            $("#panelGrey").append(btnTotal).trigger('create');
+                            break;
+                        }
+                        else if (qtArray["id"] == idCount + 1)
                         {
                             GetElements(qtArray);
                             idCount++;
@@ -256,6 +266,7 @@ function DisplayPage(jsonObject, quizBut)
                         {
                             continue;
                         }
+                        
                     }
 
                 });
