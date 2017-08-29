@@ -5,9 +5,7 @@
 
 $(document).ready(function ()
 {
-    GetSplash();
-
-    
+    GetSplash();    
 
     //back button
     $("#front-page").on("click", "#cancel", function ()
@@ -35,8 +33,6 @@ $(document).ready(function ()
         GetMain();
     });
 
-
-
     //mood survey button
     $("#front-page").on("click", "#btnMoodSurvey", function ()
     {
@@ -48,6 +44,12 @@ $(document).ready(function ()
     {
         GetJsonFile($(this).attr('id'));
     });
+
+    //exam grade button
+    $("#front-page").on("click", "#btnScore", function () {
+        GetScore();
+    });
+
 
 
 });
@@ -78,6 +80,8 @@ function GetSignUp()
     div.append('<a href="#" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-btn-b" id="btnPlay">Play</a>');
     $("#signupPage").html(div);    
 }
+
+
 
 //displays the sign up page for an account
 function AccountSignUp() {
@@ -204,75 +208,10 @@ function DisplayPage(jsonObject, quizBut)
         var panel = $('<div id="panelGrey"></div>');
         $(div).append(panel).trigger("create");
         $("#quizPage").append(div).trigger("create");
+
+        DisplayPageMoodSurvey(jsonObject);
+
         
-
-
-        if (jsonObject[0].id = "quiz01")
-        {
-            var moodSurvey = jsonObject[0];
-            let counter = 1;
-            var idCount = 0;
-            for (var i = 0; i < moodSurvey.questions.length; i++)
-            {
-                var questArray = moodSurvey.questions[i];
-                if (idCount == 0)
-                {
-                    GetElements(questArray);
-                    idCount++;
-                    var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
-                    $("#panelGrey").append(btnNextQ).trigger('create');
-                    
-                }
-                else
-                {
-                    break;
-                }
-                
-                
-
-                $("#front-page").on("click", "#btnNextQ", function ()
-                {
-                    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div></div>');
-                    var quizPage = $("#main").html(page);
-
-
-                    var div = $('<div id="quizPage-content"></div>');
-                    var panel = $('<div id="panelGrey"></div>');
-                    $(div).append(panel).trigger("create");
-                    $("#quizPage").append(div).trigger("create");
-                    
-
-                    for (var i = 0; i < moodSurvey.questions.length; i++)
-                    {
-                        var qtArray = moodSurvey.questions[i];
-
-                        if (qtArray["id"] == idCount + 1 && idCount + 1 == moodSurvey.questions.length)
-                        {
-                            GetElements(qtArray);
-                            idCount++;
-                            var btnTotal = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnTotal">Score</a>')
-                            $("#panelGrey").append(btnTotal).trigger('create');
-                            break;
-                        }
-                        else if (qtArray["id"] == idCount + 1)
-                        {
-                            GetElements(qtArray);
-                            idCount++;
-                            var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
-                            $("#panelGrey").append(btnNextQ).trigger('create');
-                            break;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                        
-                    }
-
-                });
-                   
-            }
-        }
     }
 
     if (quizBut == "btnExamGrade")
@@ -285,64 +224,198 @@ function DisplayPage(jsonObject, quizBut)
         var panel = $('<div id="panelGrey"></div>');
         $(div).append(panel).trigger("create");
 
-        
-        
+        DisplayPageExamGrade(jsonObject);
+
 
         
+    }
+}
 
-        if (jsonObject[1].id = "quiz02")
-        { 
-            var examGrade = jsonObject[1];
-            var pageArray = examGrade.questionsPerPage;
+function DisplayPageMoodSurvey(jsonObject)
+{
+    if (jsonObject[0].id = "quiz01")
+    {
+        var moodSurvey = jsonObject[0];
+        let counter = 1;
+        var idCount = 0;
+        for (var i = 0; i < moodSurvey.questions.length; i++) {
+            var questArray = moodSurvey.questions[i];
+            if (idCount == 0) {
+                GetElements(questArray);
+                idCount++;
+                var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
+                $("#panelGrey").append(btnNextQ).trigger('create');
 
-            //display questions per page as per json array
-            var count = 0;
-
-            for (var i = 0; i < examGrade.questions.length; i++)
+            }
+            else
             {
-                var questArray = examGrade.questions[i];
+                break;
+            }
 
-                if (count < pageArray[0])
-                {
-                    
-                    GetElements(questArray);
-                    count++;
-                }
-                else
-                {
-                    
-                    var btnNext = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNext">Next</a>')
-                    $("#panelGrey").append(btnNext).trigger('create');
-                    break;
-                }
 
-                $("#front-page").on("click", "#btnNext", function ()
-                {
-                    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
-                    var quizPage = $("#main").html(page);
 
-                    var div = $('<div id="quizPageExam-content"></div>');
-                    $("#quizPage").append(div).trigger("create");
-                    var panel = $('<div id="panelGrey"></div>');
-                    $(div).append(panel).trigger("create");
+            $("#front-page").on("click", "#btnNextQ", function () {
+                var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div></div>');
+                var quizPage = $("#main").html(page);
 
-                    for (var i = 0; i < examGrade.questions.length; i++)
+
+                var div = $('<div id="quizPage-content"></div>');
+                var panel = $('<div id="panelGrey"></div>');
+                $(div).append(panel).trigger("create");
+                $("#quizPage").append(div).trigger("create");
+
+
+                for (var i = 0; i < moodSurvey.questions.length; i++) {
+                    var qtArray = moodSurvey.questions[i];
+
+                    if (qtArray["id"] == idCount + 1 && idCount + 1 == moodSurvey.questions.length) {
+                        GetElements(qtArray);
+                        idCount++;
+                        var btnTotal = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnTotal">Score</a>')
+                        $("#panelGrey").append(btnTotal).trigger('create');
+                        break;
+                    }
+                    else if (qtArray["id"] == idCount + 1) {
+                        GetElements(qtArray);
+                        idCount++;
+                        var btnNextQ = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextQ">Next</a>')
+                        $("#panelGrey").append(btnNextQ).trigger('create');
+                        break;
+                    }
+                    else
                     {
-                        var qArray = examGrade.questions[i];
-                        if (qArray["id"] > pageArray[0])
-                        {
-                            GetElements(qArray);
-                        }
+                        continue;
                     }
 
-                });
+                }
 
-           
-                
-            }
+            });
+
         }
     }
 }
+
+function DisplayPageExamGrade(jsonObject)
+{
+    var examGrade = jsonObject[1];
+    var count = 0;
+    var pageArray = examGrade.questionsPerPage;
+
+    if (examGrade.id = "quiz02")
+    {
+        for (var i = 0; i < examGrade.questions.length; i++)
+        {
+            var questArray = examGrade.questions[i];
+
+            if (count < pageArray[0])
+            {
+
+                GetElements(questArray);
+                count++;
+            }
+            else
+            {
+                var panel = document.getElementById("panelGrey");
+                var btn = document.createElement("BUTTON");
+                var txt = document.createTextNode("click");
+                btn.setAttribute("id", "nxtP");
+                btn.appendChild(txt);
+                panel.appendChild(btn);
+
+                document.getElementById("nxtP").addEventListener("click", function () {
+                    GetNextPage(examGrade, count, pageArray);
+                });
+
+                //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
+                //$("#panelGrey").append(btnNextPage).trigger('create');
+                break;
+            }
+
+
+            //$("#front-page").on("click", "#btnNextPage", function ()
+            //{
+                
+            //    GetNextPage(examGrade, count, pageArray);
+                
+
+            //});
+
+        }
+    }
+}
+
+function GetNextPage(examGrade, count, pageArray)
+{
+    
+    var sid = $("#Sid").val();
+    var name = $("#Name").val();
+    localStorage.clear();
+
+    localStorage.stuId = sid;
+
+
+    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+    var quizPage = $("#main").html(page);
+
+    var div = $('<div id="quizPageExam-content"></div>');
+    $("#quizPage").append(div).trigger("create");
+    var panel = $('<div id="panelGrey"></div>');
+    $(div).append(panel).trigger("create");
+
+    for (var i = 0; i < examGrade.questions.length; i++) {
+        var qArray = examGrade.questions[i];
+        if (qArray["id"] > pageArray[0]) {
+            GetElements(qArray);
+            if (qArray["id"] == examGrade.questions.length) {
+                var btnScore = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnScore">Score</a>')
+                $("#panelGrey").append(btnScore).trigger('create');
+
+            }
+
+        }
+
+
+    }
+}
+
+function GetScore()
+{
+    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+    var quizPage = $("#main").html(page);
+
+    var div = $('<div id="quizPageExam-content"></div>');
+    $("#quizPage").append(div).trigger("create");
+    var panel = $('<div id="panelGrey"></div>');
+    $(div).append(panel).trigger("create");
+
+    obje = localStorage.stuId;
+    
+    
+
+    var p = $('<p>SID: ' + obje + '</p>');
+    $("#panelGrey").append(p).trigger('create');
+    //var score = 0;
+    //var sid = document.getElementById("Sid").getAttribute('value');
+    //var name = document.getElementById("Name").getAttribute('value');
+    //var answer = document.getElementById("Sid");
+
+    //if (answer)
+    //{
+    //    alert("got it");
+    //}
+    //for (var i = 0; i < examGrade.questions.length; i++)
+    //{
+    //    var questArray = examGrade.questions[i];
+
+    //    var answer = document.getElementById("ansForId" + questArray["id"]).value;
+
+    //    if (questArray["type"] == "textbox")
+    //    {
+            
+    //    }
+    //}
+}
+
 
 //get teh element types and display headings
 function GetElements(array)
@@ -363,34 +436,34 @@ function GetElements(array)
             switch (type) {
                 case "date": DisplayDate(questArray);
                     break;
-                case "textbox": var textboxID = questArray["id"];
+                case "textbox": var textboxID = questArray["text"];
                     DisplayTextbox(textboxID);
                     break;
-                case "textarea": var textareaID = questArray["id"];
+                case "textarea": var textareaID = questArray["text"];
                     DisplayTextarea(textareaID);
                     break;
                 case "choice": if (questArray.hasOwnProperty("options"))
                 {
-                    var selectID = questArray["id"];
+                    var selectID = questArray["text"];
                     var optArray = questArray["options"];
                     DisplayChoice(optArray, selectID);
                 }
                     break;
                 case "slidingoption": if (questArray.hasOwnProperty("options") || questArray.hasOwnProperty("optionVisuals") )
                 {
-                    var optionID = questArray["id"];
+                    var optionID = questArray["text"];
                     var optArray = questArray["options"];
                     var visuals = questArray["optionVisuals"]
                     DisplaySlidingOption(optArray, visuals, optionID);
                 }
                     break;
-                case "scale": var scaleID = questArray["id"];
+                case "scale": var scaleID = questArray["text"];
                     var optArray = questArray;
                     DisplayScale(optArray, scaleID);
                     break;
                 case "multiplechoice": if (questArray.hasOwnProperty("options"))
                 {
-                    var mcID = questArray["id"];
+                    var mcID = questArray["text"];
                     var optArray = questArray["options"];
                     DisplayMultipleChoice(optArray, mcID);
                 }
@@ -414,14 +487,14 @@ function DisplayDate(dateObj)
 
 function DisplayTextbox(textboxID)
 {
-    var txtbox = $("<input type='text' id='textbox"+textboxID+"' value=''>");
+    var txtbox = $('<input type="text" value="" id="'+textboxID+'">');
     $("#panelGrey").append(txtbox).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
 }
 
 function DisplayTextarea(textareaID)
 {
-    var txtarea = $("<textarea id='textarea"+textareaID+"'></textarea>");
+    var txtarea = $("<textarea id='"+textareaID+"'></textarea>");
     $("#panelGrey").append(txtarea).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
 }
@@ -429,7 +502,7 @@ function DisplayTextarea(textareaID)
 function DisplayChoice(opts, selectID)
 {
     var selectMenu = document.createElement("select");
-    selectMenu.setAttribute('id', 'select'+selectID)
+    selectMenu.setAttribute('id', selectID)
 
     var panel = document.getElementById("panelGrey");
 
