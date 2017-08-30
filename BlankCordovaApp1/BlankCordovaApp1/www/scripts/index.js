@@ -10,6 +10,7 @@ $(document).ready(function ()
 {
     GetSplash();    
 
+    
     //back button
     $("#front-page").on("click", "#cancel", function ()
     {
@@ -60,6 +61,7 @@ $(document).ready(function ()
 //displays the splash
 function GetSplash()
 {
+    //localStorage.clear();
     var page = $('<div id="splashPage"></div>');
     page.append('<img id="splashImg" src="images/kapps.png" /><br />');
     $("#main").html(page);
@@ -175,6 +177,11 @@ function SubmitDetails(username, password)
                             alert("Request failed saving " + textStatus);
                         });
                     alert("content saved");
+
+                    //localStorage.clear();
+                    localStorage.Name = username;
+                    localStorage.Password = password;
+                    GetMain();
                 }
 
             }
@@ -182,9 +189,7 @@ function SubmitDetails(username, password)
             {
                 alert(e);
             }
-
-            
-            
+   
             
         }).fail(function (jqXHR, textStatus)
         {
@@ -203,16 +208,25 @@ function LoadUsers()
 //displays the main page
 function GetMain()
 {
-    var page = $('<div id="frontPage"></div>'); 
-    var playPage = $("#main").html(page);
-    var headPlay = $('<div data-role="header" data-theme="a"><a href="#" id="backToSignUp" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Choose a quiz</h1></div>');
-    $(playPage).append(headPlay).trigger("create");
+    if (localStorage.getItem("Name") === null)
+    {
+        alert("Please Sign Up");
+        GetSignUp();
+    }
+    else
+    {
+        var page = $('<div id="frontPage"></div>');
+        var playPage = $("#main").html(page);
+        var headPlay = $('<div data-role="header" data-theme="a"><a href="#" id="backToSignUp" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Choose a quiz</h1></div>');
+        $(playPage).append(headPlay).trigger("create");
 
-    var div = $('<div id="frontPage-content"></div>');  
-    div.append('<img src="images/new-logo-front.png" /><br /><br />');
-    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a>');
-    div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
-    $("#frontPage").html(div);
+        var div = $('<div id="frontPage-content"></div>');
+        div.append('<img src="images/new-logo-front.png" /><br /><br />');
+        div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnMoodSurvey">Mood Survey</a>');
+        div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnExamGrade">Exam Grade</a>');
+        $("#frontPage").html(div);
+    }
+    
 
 }
 
@@ -433,7 +447,7 @@ function GetNextPage(examGrade, count, pageArray)
     
     var sid = $("#Sid").val();
     var name = $("#Name").val();
-    localStorage.clear();
+    
 
     localStorage.stuId = sid;
 
