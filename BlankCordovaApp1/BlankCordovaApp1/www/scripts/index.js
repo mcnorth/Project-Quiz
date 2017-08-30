@@ -3,6 +3,9 @@
 // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
 // and then run "window.location.reload()" in the JavaScript Console.
 
+window.usersquiz = [];
+
+
 $(document).ready(function ()
 {
     GetSplash();    
@@ -113,6 +116,87 @@ function AccountSignUp() {
 
     var submit = $('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnSubmit">Submit</a>');
     $("#panelGrey").append(submit).trigger("create");
+
+    document.getElementById("btnSubmit").addEventListener("click", function () {
+        SubmitDetails(txtUserName.val(), txtPassWord.val())
+        
+    });
+
+}
+
+function SubmitDetails(username, password)
+{
+    var url ="http://introtoapps.com/datastore.php?action=load&appid=214315615&objectid=usersquiz";
+
+    $.ajax({ url: url, cache: false })
+        .done(function (data)
+        {
+            try
+            {
+                var count = 0;
+              
+                window.usersquiz = JSON.parse(data);
+                for (var i = 0; i < usersquiz.length; i++)
+                {
+                    var user = usersquiz[i];
+                    if (user.UserName == username)
+                    {
+                        count++;
+                    }
+                          
+                }
+
+                if (count > 0)
+                {
+                    alert("User Name exist please choose another");
+                }
+                else
+                {
+                    var userObj =
+                        {
+                            UserName: username,
+                            Password: password
+                        };
+
+                    usersquiz.push(userObj);
+
+                    var obj = JSON.stringify(usersquiz);
+                    alert("Data to be saved: " + obj);
+
+                    //create url for saving
+                    //var url = baseURL + "&action=save&objectid=" + encodeURIComponent(UserName) + "&data=" + encodeURIComponent(res);
+                    var url = "http://introtoapps.com/datastore.php?action=save&appid=214315615&objectid=usersquiz&data=" + encodeURIComponent(obj);
+                    alert("URL: " + url);
+
+                    $.ajax({ url: url, cache: false })
+                        .done(function (data) {
+                            alert("Result from server: " + data);
+                        }).fail(function (jqXHR, textStatus) {
+                            alert("Request failed saving " + textStatus);
+                        });
+                    alert("content saved");
+                }
+
+            }
+            catch (e)
+            {
+                alert(e);
+            }
+
+            
+            
+            
+        }).fail(function (jqXHR, textStatus)
+        {
+            alert("Request failed loading " + textStatus);
+        });
+
+    
+    
+}
+
+function LoadUsers()
+{
 
 }
 
