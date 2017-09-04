@@ -6,6 +6,8 @@
 window.usersquiz = [];
 var answerArray = new Array();
 var eleIdArray = new Array();
+var values = new Array();
+var obj = {};
 
 $(document).ready(function ()
 {
@@ -410,13 +412,15 @@ function DisplayPageExamGrade(jsonObject)
 
 function GetNextPage(examGrade, count, pageArray)
 {
-    
-    var sid = $("#Sid").val();
-    var name = $("#Name").val();
+    $("input[type=text]").each(function () {
+        values.push(obj = { id: this.id, ans: this.value });
+    });
+    //var sid = $("#Sid").val();
+    //var name = $("#Name").val();
     
 
-    localStorage.stuId = sid;
-    localStorage.nme = name;
+    //localStorage.stuId = sid;
+    //localStorage.nme = name;
 
     var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
     var quizPage = $("#main").html(page);
@@ -448,14 +452,7 @@ function GetNextPage(examGrade, count, pageArray)
 
 function GetScore()
 {
-    //for (var i = 0; i < eleIdArray.length; i++)
-    //{
-    //    var id = eleIdArray[i];
-    //    var res = $(id).val();
-   
-    //}
-    var obj = {}
-    var values = [];
+    
     $("input[type=text]").each(function ()
     {
         values.push(obj = {id: this.id, ans: this.value});
@@ -478,14 +475,24 @@ function GetScore()
     var panel = $('<div id="panelGrey"></div>');
     $(div).append(panel).trigger("create");
 
-    obj1 = localStorage.stuId;
-    obj2 = localStorage.nme;
+    //obj1 = localStorage.stuId;
+    //obj2 = localStorage.nme;
     
 
-    var p1 = $('<p>SID: ' + obj1 + '</p>');
-    $("#panelGrey").append(p1).trigger('create');
-    var p2 = $('<p>Name: ' + obj2 + '</p>');
-    $("#panelGrey").append(p2).trigger('create');
+    //var p1 = $('<p>SID: ' + obj1 + '</p>');
+    //$("#panelGrey").append(p1).trigger('create');
+    //var p2 = $('<p>Name: ' + obj2 + '</p>');
+    //$("#panelGrey").append(p2).trigger('create');
+
+    for (var i = 0; i < eleIdArray.length; i++)
+    {
+        var txt = eleIdArray[i];
+        var t = txt.question;
+        var myP = $("<p></p>");
+        $(myP).text(t);
+        $("#panelGrey").append(myP).trigger('create');
+    }
+
 }
 
 
@@ -509,35 +516,41 @@ function GetElements(array)
                 case "date": DisplayDate(questArray);
                     break;
                 case "textbox": var textboxID = questArray["id"];
-                    DisplayTextbox(textboxID);
+                    var qst = questArray["text"];
+                    DisplayTextbox(textboxID, qst);
                     break;
                 case "textarea": var textareaID = questArray["id"];
-                    DisplayTextarea(textareaID);
+                    var qst = questArray["text"];
+                    DisplayTextarea(textareaID, qst);
                     break;
                 case "choice": if (questArray.hasOwnProperty("options"))
                 {
                     var selectID = questArray["id"];
+                    var qst = questArray["text"];
                     var optArray = questArray["options"];
-                    DisplayChoice(optArray, selectID);
+                    DisplayChoice(optArray, selectID, qst);
                 }
                     break;
                 case "slidingoption": if (questArray.hasOwnProperty("options") || questArray.hasOwnProperty("optionVisuals") )
                 {
                     var optionID = questArray["id"];
                     var optArray = questArray["options"];
-                    var visuals = questArray["optionVisuals"]
-                    DisplaySlidingOption(optArray, visuals, optionID);
+                    var qst = questArray["text"];
+                    var visuals = questArray["optionVisuals"];
+                    DisplaySlidingOption(optArray, visuals, optionID, qst);
                 }
                     break;
                 case "scale": var scaleID = questArray["id"];
                     var optArray = questArray;
-                    DisplayScale(optArray, scaleID);
+                    var qst = questArray["text"];
+                    DisplayScale(optArray, scaleID, qst);
                     break;
                 case "multiplechoice": if (questArray.hasOwnProperty("options"))
                 {
                     var mcID = questArray["id"];
+                    var qst = questArray["text"];
                     var optArray = questArray["options"];
-                    DisplayMultipleChoice(optArray, mcID);
+                    DisplayMultipleChoice(optArray, mcID, qst);
                 }
                     break;
                 default: alert("Not working");
@@ -568,22 +581,25 @@ function DisplayDate(dateObj)
     $("#panelGrey").append("<hr><br>").trigger('create');
 }
 
-function DisplayTextbox(textboxID)
+function DisplayTextbox(textboxID, qst)
 {
     var txtbox = $('<input type="text" value="" id="'+textboxID+'">');
     $("#panelGrey").append(txtbox).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
-    eleIdArray.push(textboxID);
+    var ob = { id: textboxID, question: qst };
+    eleIdArray.push(ob);
 }
 
-function DisplayTextarea(textareaID)
+function DisplayTextarea(textareaID, qst)
 {
     var txtarea = $("<textarea id='"+textareaID+"'></textarea>");
     $("#panelGrey").append(txtarea).trigger('create');
     $("#panelGrey").append("<br>").trigger('create');
+    var ob = { id: textareaID, question: qst };
+    eleIdArray.push(ob);
 }
 
-function DisplayChoice(opts, selectID)
+function DisplayChoice(opts, selectID, qst)
 {
     var selectMenu = document.createElement("select");
     selectMenu.setAttribute('id', selectID);
@@ -601,11 +617,12 @@ function DisplayChoice(opts, selectID)
     }
 
     panel.appendChild(selectMenu);
-    eleIdArray.push(selectID);
+    var ob = { id: selectID, question: qst };
+    eleIdArray.push(ob);
    
 }
 
-function DisplayMultipleChoice(opts, mcid)
+function DisplayMultipleChoice(opts, mcid, qst)
 {
         var group = $("<fieldset data-role='controlgroup' id='mChoice'></fieldset>");
 
@@ -617,10 +634,11 @@ function DisplayMultipleChoice(opts, mcid)
         $("#panelGrey").append(group).trigger('create');
         $("#panelGrey").append("<br>").trigger('create');
 
-        //eleIdArray.push()
+        var ob = { id: mcid, question: qst };
+        eleIdArray.push(ob);
 }
 
-function DisplaySlidingOption(opts, visual, optionID)
+function DisplaySlidingOption(opts, visual, optionID, qst)
     {
 
         //var sliderDiv = $('<div id="mySlider"></div>');
@@ -664,11 +682,12 @@ function DisplaySlidingOption(opts, visual, optionID)
         $("#panelGrey").append(div).trigger('create');
         $("#panelGrey").append("<br>").trigger('create');
 
-        
+        var ob = { id: optionID, question: qst };
+        eleIdArray.push(ob);
 
     }
 
-function DisplayScale(objArray, scaleID)
+function DisplayScale(objArray, scaleID, qst)
 {
     var inputC = $('<input type="range" class="scale'+scaleID+'"name="slider" id="scaleSlider" data-show-value="true"  value="0" min="' + objArray["start"] + '" max="' + objArray["end"] + '" step="' + objArray["increment"] + '">');
         $("#panelGrey").append(inputC).trigger('create');
@@ -720,8 +739,11 @@ function DisplayScale(objArray, scaleID)
 
             });
         }
+
+        var ob = { id: scaleID, question: qst };
+        eleIdArray.push(ob);
  
-    }
+}
 
    
 
