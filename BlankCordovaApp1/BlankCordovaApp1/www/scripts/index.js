@@ -7,6 +7,7 @@ window.usersquiz = [];
 var answerArray = new Array();
 var eleIdArray = new Array();
 var values = new Array();
+var checkArr = new Array();
 var obj = {};
 
 $(document).ready(function ()
@@ -452,16 +453,23 @@ function GetNextPage(examGrade, count, pageArray)
 
 function GetScore()
 {
-    
+    var checkArray = [];
+    var checkid = [];
+    var choiceId = "";
+
     $("input[type=text]").each(function ()
     {
         values.push(obj = {id: this.id, ans: this.value});
     });
-
+    
     $("#mChoice :checked").each(function ()
     {
-        values.push(obj = { id: $(this).attr("class"), ans: $(this).attr("value") });
+        checkArray.push($(this).attr("value"));
+        choiceId = $(this).attr("class");
+    
     });
+
+    values.push(obj = { id: choiceId, ans: checkArray });
 
     $(".selectMenu option:selected").each(function () {
         values.push(obj = { id: this.id, ans: $(this).text() });
@@ -475,22 +483,57 @@ function GetScore()
     var panel = $('<div id="panelGrey"></div>');
     $(div).append(panel).trigger("create");
 
-    //obj1 = localStorage.stuId;
-    //obj2 = localStorage.nme;
-    
-
-    //var p1 = $('<p>SID: ' + obj1 + '</p>');
-    //$("#panelGrey").append(p1).trigger('create');
-    //var p2 = $('<p>Name: ' + obj2 + '</p>');
-    //$("#panelGrey").append(p2).trigger('create');
 
     for (var i = 0; i < eleIdArray.length; i++)
     {
         var txt = eleIdArray[i];
-        var t = txt.question;
-        var myP = $("<p></p>");
-        $(myP).text(t);
-        $("#panelGrey").append(myP).trigger('create');
+        var txtQst = txt.question;
+        var txtid = txt.id;
+
+        for (var k = 0; k < values.length; k++)        
+        {
+            var val = values[k];
+            var valAns = val.ans;
+            var valid = val.id;
+
+            if (txtid == valid)
+            {
+                for (var j = 0; j < answerArray.length; j++)
+                {
+                    var ans = answerArray[j];
+                    var ansid = ans.id;
+                    var ansAns = ans.answer;
+
+                    if (txtid == ansid)
+                    {
+                        var txtp = $("<p></p>");
+                        $(txtp).text(txtQst);
+                        $("#panelGrey").append(txtp).trigger('create');
+
+                        var valp = $("<p></p>");
+                        $(valp).text(valAns);
+                        $("#panelGrey").append(valp).trigger('create');
+                        break;
+                    }                   
+                    else
+                    {
+                        var txtp = $("<p></p>");
+                        $(txtp).text(txtQst);
+                        $("#panelGrey").append(txtp).trigger('create');
+
+                        var valp = $("<p></p>");
+                        $(valp).text(valAns);
+                        $("#panelGrey").append(valp).trigger('create');
+                        break;
+                    }
+                    
+                }
+                
+            }
+            
+                            
+        }
+               
     }
 
 }
