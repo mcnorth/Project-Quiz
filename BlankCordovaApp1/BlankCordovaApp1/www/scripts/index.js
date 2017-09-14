@@ -451,11 +451,21 @@ function GetNextPage(examGrade, count, pageArray)
     }
 }
 
+function TallyScore()
+{
+
+}
+
 function GetScore()
 {
     var checkArray = [];
-    var checkid = [];
     var choiceId = "";
+    var arrayForAns = [];
+    var theID = "";
+    var ansLower = [];
+    var valLower = [];
+    var matches = [];
+   
 
     $("input[type=text]").each(function ()
     {
@@ -495,40 +505,137 @@ function GetScore()
             var val = values[k];
             var valAns = val.ans;
             var valid = val.id;
-
+           
             if (txtid == valid)
             {
-                for (var j = 0; j < answerArray.length; j++)
-                {
+                var txtp = $("<p></p>");
+                $(txtp).text(txtQst);
+                $("#panelGrey").append(txtp).trigger('create');
+
+                var valp = $("<p></p>");
+                $(valp).text(valAns);
+                $("#panelGrey").append(valp).trigger('create');
+
+
+                for (var j = 0; j < answerArray.length; j++) {
                     var ans = answerArray[j];
                     var ansid = ans.id;
                     var ansAns = ans.answer;
 
                     if (txtid == ansid)
-                    {
-                        var txtp = $("<p></p>");
-                        $(txtp).text(txtQst);
-                        $("#panelGrey").append(txtp).trigger('create');
+                    {                      
+                        if (ansAns instanceof Array)
+                        {
+                            for (var e = 0; e < ansAns.length; e++)
+                            {
+                                ansLower.push(ansAns[e].toLowerCase());
+                            }
 
-                        var valp = $("<p></p>");
-                        $(valp).text(valAns);
-                        $("#panelGrey").append(valp).trigger('create');
-                        break;
-                    }                   
+                            //ansAns.forEach(function (item) {
+                            //    item.toString().toLowerCase();
+                            //    ansLower.push(item);
+                            //})
+
+                            
+
+                            if (valAns instanceof Array)
+                            {
+                                for (var f = 0; f < valAns.length; f++) {
+                                    valLower.push(valAns[f].toLowerCase());
+                                }
+
+                                
+
+                                ansLower.sort();
+                                valLower.sort();
+
+                                for (var c = 0; c < valLower.length; c++)
+                                {
+                                    for (var d = 0; d < ansLower.length; d++)
+                                    {
+                                        if (valLower[d] === ansLower[c])
+                                        {
+                                            matches.push(valLower[d]);
+                                        }
+                                    }
+                                }
+
+                                if (matches.length == ansLower.length)
+                                {
+                                    var correct = $('<img src="images/tick.png"/>');
+                                    $("#panelGrey").append(correct).trigger('create');
+                                    ansLower = [];
+                                    valLower = [];
+                                    break;
+                                }
+                                else
+                                {
+                                    var wrong = $('<img src="images/cross.png"/>');
+                                    $("#panelGrey").append(wrong).trigger('create');
+                                    ansLower = [];
+                                    valLower = [];
+                                    break;
+                                }
+                                
+                            }
+                            else
+                            {
+                                valAns = valAns.toLowerCase();
+
+
+                                var result = $.inArray(valAns, ansLower);
+                                //var result = $.inArray($("input:first").val(), ansLower);
+
+                                //if ($.inArray($("input:first").val(), Array) > 0)
+                                if (result > 0)
+                                {
+                                    var correct = $('<img src="images/tick.png"/>');
+                                    $("#panelGrey").append(correct).trigger('create');
+                                    ansLower = [];
+                                    valLower = [];
+                                    break;
+                                }
+                                else
+                                {
+                                    var wrong = $('<img src="images/cross.png"/>');
+                                    $("#panelGrey").append(wrong).trigger('create');
+                                    ansLower = [];
+                                    valLower = [];
+                                    break;
+                                }
+                            }
+                            
+
+                        }
+                        else
+                        {
+                            valAns = valAns.toLowerCase();
+                            if (valAns == ansAns)
+                            {
+                                var correct = $('<img src="images/tick.png"/>');
+                                $("#panelGrey").append(correct).trigger('create');
+                                break;
+                            }
+                            else
+                            {
+                                var wrong = $('<img src="images/cross.png"/>');
+                                $("#panelGrey").append(wrong).trigger('create');
+                                break;
+                            }
+                        }
+
+                    }
                     else
                     {
-                        var txtp = $("<p></p>");
-                        $(txtp).text(txtQst);
-                        $("#panelGrey").append(txtp).trigger('create');
-
-                        var valp = $("<p></p>");
-                        $(valp).text(valAns);
-                        $("#panelGrey").append(valp).trigger('create');
-                        break;
+                        continue;
                     }
-                    
+
                 }
-                
+
+            }
+            else
+            {
+                continue;
             }
             
                             
@@ -602,14 +709,28 @@ function GetElements(array)
         }
         if (key == "answer")
         {
-            var qId = questArray["id"];
-            var quest = questArray["text"];
-            var ans = questArray["answer"];
-            var wgt = questArray["weighting"];
+            if (Array.isArray(questArray["answer"]))
+            {
+                var qId = questArray["id"]
+                var quest = questArray["text"];
+                var ans = questArray["answer"];
+                var wgt = questArray["weighting"];
+                var obj = { id: qId, question: quest, answer: ans, weighting: wgt };
+                answerArray.push(obj);
+            }
+            else
+            {
+                var qId = questArray["id"];
+                var quest = questArray["text"];
+                var ans = questArray["answer"].toLowerCase();
+                var wgt = questArray["weighting"];
+                var obj = { id: qId, question: quest, answer: ans, weighting: wgt };
+                answerArray.push(obj);
+            }
+            
 
-            var obj = { id: qId, question: quest, answer: ans, weighting: wgt };
-
-            answerArray.push(obj);
+            
+            
         }
     }
 }
