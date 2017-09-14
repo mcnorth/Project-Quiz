@@ -465,6 +465,8 @@ function GetScore()
     var ansLower = [];
     var valLower = [];
     var matches = [];
+    var score = "";
+    var totalScore = 0;
    
 
     $("input[type=text]").each(function ()
@@ -499,6 +501,7 @@ function GetScore()
         var txt = eleIdArray[i];
         var txtQst = txt.question;
         var txtid = txt.id;
+        
 
         for (var k = 0; k < values.length; k++)        
         {
@@ -521,6 +524,7 @@ function GetScore()
                     var ans = answerArray[j];
                     var ansid = ans.id;
                     var ansAns = ans.answer;
+                    var weight = ans.weighting;
 
                     if (txtid == ansid)
                     {                      
@@ -530,24 +534,13 @@ function GetScore()
                             {
                                 ansLower.push(ansAns[e].toLowerCase());
                             }
-
-                            //ansAns.forEach(function (item) {
-                            //    item.toString().toLowerCase();
-                            //    ansLower.push(item);
-                            //})
-
-                            
-
+                           
                             if (valAns instanceof Array)
                             {
                                 for (var f = 0; f < valAns.length; f++) {
                                     valLower.push(valAns[f].toLowerCase());
                                 }
-
-                                
-
-                                ansLower.sort();
-                                valLower.sort();
+                               
 
                                 for (var c = 0; c < valLower.length; c++)
                                 {
@@ -562,16 +555,24 @@ function GetScore()
 
                                 if (matches.length == ansLower.length)
                                 {
+                                    score = weight.toString();
                                     var correct = $('<img src="images/tick.png"/>');
                                     $("#panelGrey").append(correct).trigger('create');
+                                    var sc = $('<p>Score: ' + score +'</p>');                                    
+                                    $("#panelGrey").append(sc).trigger('create');
+                                    totalScore = totalScore + weight;
                                     ansLower = [];
                                     valLower = [];
                                     break;
                                 }
                                 else
                                 {
+                                    score = "0";
                                     var wrong = $('<img src="images/cross.png"/>');
                                     $("#panelGrey").append(wrong).trigger('create');
+                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    $("#panelGrey").append(sc).trigger('create');
+                                    totalScore = totalScore + 0;
                                     ansLower = [];
                                     valLower = [];
                                     break;
@@ -584,21 +585,27 @@ function GetScore()
 
 
                                 var result = $.inArray(valAns, ansLower);
-                                //var result = $.inArray($("input:first").val(), ansLower);
-
-                                //if ($.inArray($("input:first").val(), Array) > 0)
+                                
                                 if (result > 0)
                                 {
+                                    score = weight.toString();
                                     var correct = $('<img src="images/tick.png"/>');
                                     $("#panelGrey").append(correct).trigger('create');
+                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    $("#panelGrey").append(sc).trigger('create');
+                                    totalScore = totalScore + weight;
                                     ansLower = [];
                                     valLower = [];
                                     break;
                                 }
                                 else
                                 {
+                                    score = "0";
                                     var wrong = $('<img src="images/cross.png"/>');
                                     $("#panelGrey").append(wrong).trigger('create');
+                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    $("#panelGrey").append(sc).trigger('create');
+                                    totalScore = totalScore + 0;
                                     ansLower = [];
                                     valLower = [];
                                     break;
@@ -612,14 +619,22 @@ function GetScore()
                             valAns = valAns.toLowerCase();
                             if (valAns == ansAns)
                             {
+                                score = weight.toString();
                                 var correct = $('<img src="images/tick.png"/>');
                                 $("#panelGrey").append(correct).trigger('create');
+                                var sc = $('<p>Score: ' + score + '</p>');
+                                $("#panelGrey").append(sc).trigger('create');
+                                totalScore = totalScore + weight;
                                 break;
                             }
                             else
                             {
+                                score = "0";
                                 var wrong = $('<img src="images/cross.png"/>');
                                 $("#panelGrey").append(wrong).trigger('create');
+                                var sc = $('<p>Score: ' + score + '</p>');
+                                $("#panelGrey").append(sc).trigger('create');
+                                totalScore = totalScore + 0;
                                 break;
                             }
                         }
@@ -642,6 +657,9 @@ function GetScore()
         }
                
     }
+
+    var tsc = $('<p>Total Score: ' + totalScore + '</p>');
+    $("#panelGrey").append(tsc).trigger('create');
 
 }
 
