@@ -58,7 +58,12 @@ $(document).ready(function ()
         GetScore();
     });
 
+    //save mood quiz
+    $("#front-page").on("click", "#saveExam", function () {
+        SaveExam();
+    });
 
+    
 
 });
 
@@ -182,7 +187,7 @@ function SubmitDetails(username, password)
                         });
                     alert("content saved");
 
-                    //localStorage.clear();
+                    localStorage.clear();
                     localStorage.Name = username;
                     localStorage.Password = password;
                     GetMain();
@@ -329,7 +334,7 @@ function DisplayPage(jsonObject, quizBut)
 
     if (quizBut == "btnExamGrade")
     {
-        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1><a href="#" id="saveExam" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all">Save</a></div></div>');
         var quizPage = $("#main").html(page);
 
         var div = $('<div id="quizPageExam-content"></div>');
@@ -416,12 +421,11 @@ function GetNextPage(examGrade, count, pageArray)
     $("input[type=text]").each(function () {
         values.push(obj = { id: this.id, ans: this.value });
     });
-    //var sid = $("#Sid").val();
-    //var name = $("#Name").val();
-    
 
-    //localStorage.stuId = sid;
-    //localStorage.nme = name;
+    var sid = $("#Sid").val();
+    var name = $("#Name").val();    
+    localStorage.stuId = sid;
+    localStorage.nme = name;
 
     var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
     var quizPage = $("#main").html(page);
@@ -451,9 +455,23 @@ function GetNextPage(examGrade, count, pageArray)
     }
 }
 
-function TallyScore()
+function SaveExam()
 {
+    $("input[type=text]").each(function () {
+        values.push(obj = { id: this.id, ans: this.value });
+    });
 
+    $("#mChoice :checked").each(function () {
+        checkArray.push($(this).attr("value"));
+        choiceId = $(this).attr("class");
+
+    });
+
+    values.push(obj = { id: choiceId, ans: checkArray });
+
+    $(".selectMenu option:selected").each(function () {
+        values.push(obj = { id: this.id, ans: $(this).text() });
+    });
 }
 
 function GetScore()
