@@ -4,16 +4,26 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 
 window.usersquiz = [];
+window.userSavedData = [];
 var answerArray = new Array();
 var eleIdArray = new Array();
 var values = new Array();
 var checkArr = new Array();
+var saveCheckArr = new Array();
+var saveValues = new Array();
 var obj = {};
 
 $(document).ready(function ()
 {
-    GetSplash();    
+    localStorage.removeItem('page');
+    //var retPage = JSON.parse(localStorage.getItem('page'));
 
+    //if (retPage === null)
+    //{
+    //    GetSplash(); 
+    //}
+       
+    GetSplash();
     
     //back button
     $("#front-page").on("click", "#cancel", function ()
@@ -58,9 +68,14 @@ $(document).ready(function ()
         GetScore();
     });
 
-    //save mood quiz
+    //save exam quiz
     $("#front-page").on("click", "#saveExam", function () {
         SaveExam();
+    });
+
+    //load quiz
+    $("#front-page").on("click", "#btnLoad", function () {
+        LoadData();
     });
 
     
@@ -92,6 +107,7 @@ function GetSignUp()
     div.append('<img src="images/new-logo-front.png" /><br /><br />');
     div.append('<a href="#" data-role="button" class="ui-btn ui-corner-all ui-btn-b" id="btnSignUp">Sign Up</a>');
     div.append('<a href="#" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-btn-b" id="btnPlay">Play</a>');
+    div.append('<a href="#" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-btn-b" id="btnLoad">Load</a>');
     $("#signupPage").html(div);    
 }
 
@@ -209,10 +225,6 @@ function SubmitDetails(username, password)
     
 }
 
-function LoadUsers()
-{
-
-}
 
 //displays the main page
 function GetMain()
@@ -418,16 +430,16 @@ function DisplayPageExamGrade(jsonObject)
 
 function GetNextPage(examGrade, count, pageArray)
 {
+    
+
     $("input[type=text]").each(function () {
         values.push(obj = { id: this.id, ans: this.value });
     });
+   
+    localStorage.stuId = values[0].ans;
+    localStorage.nme = values[1].ans;
 
-    var sid = $("#Sid").val();
-    var name = $("#Name").val();    
-    localStorage.stuId = sid;
-    localStorage.nme = name;
-
-    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
+    var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1><a href="#" id="saveExam" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all">Save</a></div></div>');
     var quizPage = $("#main").html(page);
 
     var div = $('<div id="quizPageExam-content"></div>');
@@ -453,25 +465,65 @@ function GetNextPage(examGrade, count, pageArray)
 
 
     }
+    
+}
+
+function LoadData()
+{
+
 }
 
 function SaveExam()
 {
+   
+    var saveChoiceId = "";
+
     $("input[type=text]").each(function () {
-        values.push(obj = { id: this.id, ans: this.value });
+        saveValues.push(obj = { id: this.id, ans: this.value });
     });
 
     $("#mChoice :checked").each(function () {
-        checkArray.push($(this).attr("value"));
-        choiceId = $(this).attr("class");
+        saveCheckArr.push($(this).attr("value"));
+        saveChoiceId = $(this).attr("class");
 
     });
 
-    values.push(obj = { id: choiceId, ans: checkArray });
+    saveValues.push(obj = { id: saveChoiceId, ans: saveCheckArr });
 
     $(".selectMenu option:selected").each(function () {
-        values.push(obj = { id: this.id, ans: $(this).text() });
+        saveValues.push(obj = { id: this.id, ans: $(this).text() });
     });
+
+    var saveObj =
+        {
+            Sid: localStorage.getItem("stuId"),
+            Name: localStorage.getItem("nme"),
+            ExamValues: saveValues
+        };
+    
+    userSavedData.push(saveObj);
+
+    var obj = JSON.stringify(userSavedData);
+    alert("Data to be saved: " + obj);
+
+    var quizUser = "saveddata" + localStorage.getItem("Name");
+
+    
+    var url = "http://introtoapps.com/datastore.php?action=save&appid=214315615&objectid=" + encodeURIComponent(quizUser) + "&data=" + encodeURIComponent(obj);
+    alert("URL: " + url);
+
+    $.ajax({ url: url, cache: false })
+        .done(function (data)
+        {
+            alert("Result from server: " + data);
+
+        }).fail(function (jqXHR, textStatus)
+        {
+            alert("Request failed saving " + textStatus);
+        });
+
+    alert("content saved");
+    
 }
 
 function GetScore()
