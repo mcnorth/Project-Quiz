@@ -60,7 +60,9 @@ $(document).ready(function ()
     //exam grade button
     $("#front-page").on("click", "#btnExamGrade", function ()
     {
-        GetJsonFile($(this).attr('id'));
+       // GetJsonFile($(this).attr('id'));
+        var butId = "btnExam";
+        GetJsonFile(butId);
     });
 
     //exam grade button
@@ -344,9 +346,9 @@ function DisplayPage(jsonObject, quizBut)
         
     }
 
-    if (quizBut == "btnExamGrade")
+    if (quizBut == "btnExam")
     {
-        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1><a href="#" id="saveExam" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all">Save</a></div></div>');
+        var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
         var quizPage = $("#main").html(page);
 
         var div = $('<div id="quizPageExam-content"></div>');
@@ -391,29 +393,64 @@ function DisplayPageExamGrade(jsonObject)
         {
             var questArray = examGrade.questions[i];
 
-            if (count < pageArray[0])
+            //display saved data
+            if (localStorage.stuId === null)
             {
+                if (count < pageArray[0])
+                {
 
-                GetElements(questArray);
-                count++;
+                    GetElements(questArray);
+                    count++;
+                }
+                else
+                {
+                    var panel = document.getElementById("panelGrey");
+                    var btn = document.createElement("BUTTON");
+                    var txt = document.createTextNode("click");
+                    btn.setAttribute("id", "nxtP");
+                    btn.appendChild(txt);
+                    panel.appendChild(btn);
+
+                    document.getElementById("nxtP").addEventListener("click", function () {
+                        GetNextPage(examGrade, count, pageArray);
+                    });
+
+                    //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
+                    //$("#panelGrey").append(btnNextPage).trigger('create');
+                    break;
+                }
             }
             else
             {
-                var panel = document.getElementById("panelGrey");
-                var btn = document.createElement("BUTTON");
-                var txt = document.createTextNode("click");
-                btn.setAttribute("id", "nxtP");
-                btn.appendChild(txt);
-                panel.appendChild(btn);
+                if (count < pageArray[0])
+                {
 
-                document.getElementById("nxtP").addEventListener("click", function () {
+                    GetElements(questArray);
+                    count++;
+                }
+                else
+                {
+                    $("input[type=text]").each(function ()
+                    {
+                        if (this.id == "1")
+                        {
+                            this.value = localStorage.getItem("stuId")
+                        }
+                        if (this.id == "2")
+                        {
+                            this.value = localStorage.getItem("nme");
+                        }
+                    });
+
                     GetNextPage(examGrade, count, pageArray);
-                });
 
-                //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
-                //$("#panelGrey").append(btnNextPage).trigger('create');
-                break;
+                    //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
+                    //$("#panelGrey").append(btnNextPage).trigger('create');
+                    
+                }
             }
+
+            
 
 
             //$("#front-page").on("click", "#btnNextPage", function ()
@@ -456,8 +493,101 @@ function GetNextPage(examGrade, count, pageArray)
 
             if (qArray["id"] == examGrade.questions.length)
             {
-                var btnScore = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnScore">Score</a>')
-                $("#panelGrey").append(btnScore).trigger('create');
+                if (userSavedData.length > 0)
+                {
+                    var ev = userSavedData[0].ExamValues;
+                    var checkBoxes = [];
+
+                    $("input[type=text]").each(function ()
+                    {
+                        
+
+                        for (var i = 0; i < ev.length; i++)
+                        {
+                            if (ev[i].id == this.id)
+                            {
+                                this.value = ev[i].ans;
+                            }
+                        }
+                        
+                    });
+
+                    $("[name=selectMenu] option").each(function ()
+                    {
+                        for (var i = 0; i < ev.length; i++)
+                        {
+                            if (ev[i].id == $(this).prop('id'))
+                            {
+                                $(this).prop('selected', ev[i].ans);
+                                
+                            }
+                        }
+                        
+                    });
+
+                    $('input:checkbox[name=mcCheckBoxes]').each(function ()
+                    {
+                        obj = {
+                            id: $(this).attr('class'),
+                            value: $(this).attr('value')
+                        }
+                        checkBoxes.push(obj);
+
+                    });
+
+                    //for (var i = 0; i < ev.length; i++) {
+                    //    if ($(this).attr('class') == ev[i].id) {
+                    //        var sca = ev[i].ans;
+                    //        if (sca instanceof Array) {
+                    //            for (var k = 0; k < sca.length; i++) {
+                    //                if (sca[k] == $('input:checkbox[name=mcCheckBoxes]').attr("value")) {
+                    //                    $(this).prop('checked', true);
+                    //                }
+                    //            }
+
+                    //        }
+                    //    }
+                    //}
+
+                    //$("#mChoice :not(:checked)").each(function ()
+                    //{
+                    //    for (var i = 0; i < ev.length; i++)
+                    //    {
+                    //        if (ev[i].id == $('input:checkbox[name=mcCheckBoxes]').attr("class"))
+                    //        {
+                    //            var sca = ev[i].ans;
+
+                    //            if (sca instanceof Array)
+                    //            {
+                    //                for (var k = 0; k < sca.length; i++)
+                    //                {
+                    //                    if (sca[k] == $('input:checkbox[name=mcCheckBoxes]').attr("value"))
+                    //                    {
+                    //                        $('#mChoice').prop('checked', true);
+                    //                    }
+                                        
+                    //                }
+                    //            }
+                                
+                                
+
+                    //        }
+                    //    }
+                        
+
+                    //});
+
+                    var btnScore = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnScore">Score</a>')
+                    $("#panelGrey").append(btnScore).trigger('create');
+                    break;
+                }
+                else
+                {
+                    var btnScore = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnScore">Score</a>')
+                    $("#panelGrey").append(btnScore).trigger('create');
+                    break;
+                }
+                
 
             }
 
@@ -470,7 +600,37 @@ function GetNextPage(examGrade, count, pageArray)
 
 function LoadData()
 {
+    var quizUser = "saveddata" + localStorage.getItem("Name");
+    var url = "http://introtoapps.com/datastore.php?action=load&appid=214315615&objectid=" + encodeURIComponent(quizUser);
 
+    $.ajax({ url: url, cache: false })
+        .done(function (data) {
+
+            try
+            {
+                window.userSavedData = JSON.parse(data);
+
+                if (userSavedData.length > 0)
+                {
+                    localStorage.stuId = userSavedData[0].Sid;
+                    localStorage.nme = userSavedData[0].Name;
+                    var butId = "btnExam";
+                    GetJsonFile(butId);
+                }
+                else
+                {
+                    alert("No saved exam exists");
+                    GetMain();
+                }
+            }
+            catch (e)
+            {
+                alert(e);
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+            alert("Request failed loading " + textStatus);
+        });
 }
 
 function SaveExam()
@@ -856,6 +1016,7 @@ function DisplayChoice(opts, selectID, qst)
     var selectMenu = document.createElement("select");
     selectMenu.setAttribute('id', selectID);
     selectMenu.setAttribute('class', 'selectMenu');
+    selectMenu.setAttribute('name', 'selectMenu');
 
     var panel = document.getElementById("panelGrey");
 
@@ -876,12 +1037,12 @@ function DisplayChoice(opts, selectID, qst)
 
 function DisplayMultipleChoice(opts, mcid, qst)
 {
-        var group = $("<fieldset data-role='controlgroup' id='mChoice'></fieldset>");
+    var group = $("<fieldset data-role='controlgroup' id='mChoice' name='" + mcid + "'></fieldset>");
 
         for (var i = 0; i < opts.length; i++)
         {
             var name = opts[i];
-            $(group).append('<input type="checkbox" class="' + mcid + '"value="' + name + '" id="id' + i + '"><label for="id' + i + '">' + name + '</label>');
+            $(group).append('<input type="checkbox" name="mcCheckBoxes" class="' + mcid + '"value="' + name + '" id="id' + i + '"><label for="id' + i + '">' + name + '</label>');
         }
         $("#panelGrey").append(group).trigger('create');
         $("#panelGrey").append("<br>").trigger('create');
