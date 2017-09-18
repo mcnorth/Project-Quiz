@@ -499,9 +499,7 @@ function GetNextPage(examGrade, count, pageArray)
                     var checkBoxes = [];
 
                     $("input[type=text]").each(function ()
-                    {
-                        
-
+                    {                        
                         for (var i = 0; i < ev.length; i++)
                         {
                             if (ev[i].id == this.id)
