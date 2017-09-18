@@ -525,58 +525,50 @@ function GetNextPage(examGrade, count, pageArray)
                         
                     });
 
+                   
+
                     $('input:checkbox[name=mcCheckBoxes]').each(function ()
                     {
-                        obj = {
-                            id: $(this).attr('class'),
-                            value: $(this).attr('value')
+                        var cb = $(this);
+                        var cbId = $(this).attr('class');
+                        var cbValue = $(this).attr('value');
+
+                        for (var k = 0; k < ev.length; k++)
+                        {
+                            var evId = ev[k].id;
+                            var evValue = ev[k].ans;
+
+                            if (cbId == evId)
+                            {
+                                if (evValue instanceof Array)
+                                {
+                                    for (var j = 0; j < evValue.length; j++)
+                                    {
+                                        var evAns = evValue[j];
+                                        if (evAns == cbValue)
+                                        {
+                                            cb.attr('checked', true);
+                                        }
+                                        else
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                continue;
+                            }
                         }
-                        checkBoxes.push(obj);
 
                     });
 
-                    //for (var i = 0; i < ev.length; i++) {
-                    //    if ($(this).attr('class') == ev[i].id) {
-                    //        var sca = ev[i].ans;
-                    //        if (sca instanceof Array) {
-                    //            for (var k = 0; k < sca.length; i++) {
-                    //                if (sca[k] == $('input:checkbox[name=mcCheckBoxes]').attr("value")) {
-                    //                    $(this).prop('checked', true);
-                    //                }
-                    //            }
-
-                    //        }
-                    //    }
-                    //}
-
-                    //$("#mChoice :not(:checked)").each(function ()
-                    //{
-                    //    for (var i = 0; i < ev.length; i++)
-                    //    {
-                    //        if (ev[i].id == $('input:checkbox[name=mcCheckBoxes]').attr("class"))
-                    //        {
-                    //            var sca = ev[i].ans;
-
-                    //            if (sca instanceof Array)
-                    //            {
-                    //                for (var k = 0; k < sca.length; i++)
-                    //                {
-                    //                    if (sca[k] == $('input:checkbox[name=mcCheckBoxes]').attr("value"))
-                    //                    {
-                    //                        $('#mChoice').prop('checked', true);
-                    //                    }
-                                        
-                    //                }
-                    //            }
-                                
-                                
-
-                    //        }
-                    //    }
-                        
-
-                    //});
-
+                   
                     var btnScore = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnScore">Score</a>')
                     $("#panelGrey").append(btnScore).trigger('create');
                     break;
