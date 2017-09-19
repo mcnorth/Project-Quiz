@@ -15,7 +15,7 @@ var obj = {};
 
 $(document).ready(function ()
 {
-    localStorage.removeItem('page');
+    //localStorage.removeItem('page');
     //var retPage = JSON.parse(localStorage.getItem('page'));
 
     //if (retPage === null)
@@ -401,7 +401,7 @@ function DisplayPageExamGrade(jsonObject)
             var questArray = examGrade.questions[i];
 
             //display saved data
-            if (localStorage.stuId === null)
+            if (localStorage.getItem("load") === null)
             {
                 if (count < pageArray[0])
                 {
@@ -418,10 +418,17 @@ function DisplayPageExamGrade(jsonObject)
                     btn.appendChild(txt);
                     panel.appendChild(btn);
 
-                    document.getElementById("nxtP").addEventListener("click", function () {
+                    document.getElementById("nxtP").addEventListener("click", function ()
+                    {
+                        
+
                         GetNextPage(examGrade, count, pageArray);
+                        
                     });
 
+                   
+
+                    
                     //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
                     //$("#panelGrey").append(btnNextPage).trigger('create');
                     break;
@@ -476,8 +483,10 @@ function GetNextPage(examGrade, count, pageArray)
 {
     
 
-    $("input[type=text]").each(function () {
+    $("input[type=text]").each(function ()
+    { 
         values.push(obj = { id: this.id, ans: this.value });
+          
     });
    
     localStorage.stuId = values[0].ans;
@@ -597,6 +606,7 @@ function GetNextPage(examGrade, count, pageArray)
 
 function LoadData()
 {
+    localStorage.load = "true";
     var quizUser = "saveddata" + localStorage.getItem("Name");
     var url = "http://introtoapps.com/datastore.php?action=load&appid=214315615&objectid=" + encodeURIComponent(quizUser);
 
@@ -738,13 +748,14 @@ function GetScore()
            
             if (txtid == valid)
             {
-                var txtp = $("<p></p>");
+                var txtp = $("<p id='scrHeading'></p>");
                 $(txtp).text(txtQst);
                 $("#panelGrey").append(txtp).trigger('create');
 
-                var valp = $("<p></p>");
+                var valp = $("<p id='ansText'></p>");
                 $(valp).text(valAns);
                 $("#panelGrey").append(valp).trigger('create');
+                //$(valp).css({ "border": "2px solid white", "border-radius": "5px"});
 
 
                 for (var j = 0; j < answerArray.length; j++) {
@@ -783,9 +794,12 @@ function GetScore()
                                 if (matches.length == ansLower.length)
                                 {
                                     score = weight.toString();
+
+                                    //$(valp).css("background-color", "green");
+
                                     var correct = $('<img src="images/tick.png"/>');
                                     $("#panelGrey").append(correct).trigger('create');
-                                    var sc = $('<p>Score: ' + score +'</p>');                                    
+                                    var sc = $('<p id="scrText">Score: ' + score +'</p>');                                    
                                     $("#panelGrey").append(sc).trigger('create');
                                     totalScore = totalScore + weight;
                                     ansLower = [];
@@ -797,7 +811,7 @@ function GetScore()
                                     score = "0";
                                     var wrong = $('<img src="images/cross.png"/>');
                                     $("#panelGrey").append(wrong).trigger('create');
-                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    var sc = $('<p id="scrText">Score: ' + score + '</p>');
                                     $("#panelGrey").append(sc).trigger('create');
                                     totalScore = totalScore + 0;
                                     ansLower = [];
@@ -818,7 +832,7 @@ function GetScore()
                                     score = weight.toString();
                                     var correct = $('<img src="images/tick.png"/>');
                                     $("#panelGrey").append(correct).trigger('create');
-                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    var sc = $('<p id="scrText">Score: ' + score + '</p>');
                                     $("#panelGrey").append(sc).trigger('create');
                                     totalScore = totalScore + weight;
                                     ansLower = [];
@@ -830,7 +844,7 @@ function GetScore()
                                     score = "0";
                                     var wrong = $('<img src="images/cross.png"/>');
                                     $("#panelGrey").append(wrong).trigger('create');
-                                    var sc = $('<p>Score: ' + score + '</p>');
+                                    var sc = $('<p id="scrText">Score: ' + score + '</p>');
                                     $("#panelGrey").append(sc).trigger('create');
                                     totalScore = totalScore + 0;
                                     ansLower = [];
@@ -849,7 +863,7 @@ function GetScore()
                                 score = weight.toString();
                                 var correct = $('<img src="images/tick.png"/>');
                                 $("#panelGrey").append(correct).trigger('create');
-                                var sc = $('<p>Score: ' + score + '</p>');
+                                var sc = $('<p id="scrText">Score: ' + score + '</p>');
                                 $("#panelGrey").append(sc).trigger('create');
                                 totalScore = totalScore + weight;
                                 break;
@@ -859,7 +873,7 @@ function GetScore()
                                 score = "0";
                                 var wrong = $('<img src="images/cross.png"/>');
                                 $("#panelGrey").append(wrong).trigger('create');
-                                var sc = $('<p>Score: ' + score + '</p>');
+                                var sc = $('<p id="scrText">Score: ' + score + '</p>');
                                 $("#panelGrey").append(sc).trigger('create');
                                 totalScore = totalScore + 0;
                                 break;
@@ -885,7 +899,7 @@ function GetScore()
                
     }
 
-    var tsc = $('<p>Total Score: ' + totalScore + '</p>');
+    var tsc = $('<p id="totScrText">Total Score: ' + totalScore + '</p>');
     $("#panelGrey").append(tsc).trigger('create');
 
 }
