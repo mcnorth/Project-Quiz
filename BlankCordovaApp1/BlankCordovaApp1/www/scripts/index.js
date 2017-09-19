@@ -181,10 +181,16 @@ function SubmitDetails(username, password)
                 }
                 else
                 {
+                    //API to hash the password
+                    var sha = new jsSHA("SHA-256", "TEXT");
+                    sha.update(password);
+                    var hash = sha.getHash("HEX");
+
+
                     var userObj =
                         {
                             UserName: username,
-                            Password: password
+                            Password: hash
                         };
 
                     usersquiz.push(userObj);
@@ -209,6 +215,7 @@ function SubmitDetails(username, password)
                     localStorage.Name = username;
                     localStorage.Password = password;
                     GetMain();
+
                 }
 
             }
