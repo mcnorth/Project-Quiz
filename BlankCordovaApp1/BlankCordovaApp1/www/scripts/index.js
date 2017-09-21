@@ -3,6 +3,7 @@
 // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
 // and then run "window.location.reload()" in the JavaScript Console.
 
+//global variables
 window.usersquiz = [];
 window.userSavedData = [];
 window.answerArray = [];
@@ -15,7 +16,7 @@ window.obj = {};
 
 $(document).ready(function ()
 {
-    localStorage.clear();
+    //localStorage.clear();
     //localStorage.removeItem('page');
     //var retPage = JSON.parse(localStorage.getItem('page'));
 
@@ -154,6 +155,8 @@ function AccountSignUp() {
 
 }
 
+
+//submits the details to the datastore and adds the user to localstorage
 function SubmitDetails(username, password)
 {
     var url ="http://introtoapps.com/datastore.php?action=load&appid=214315615&objectid=usersquiz";
@@ -178,7 +181,8 @@ function SubmitDetails(username, password)
 
                 if (count > 0)
                 {
-                    alert("User Name exist please choose another");
+                    $("#popupUserNameExists").popup("open");
+                    
                 }
                 else
                 {
@@ -197,18 +201,18 @@ function SubmitDetails(username, password)
                     usersquiz.push(userObj);
 
                     var obj = JSON.stringify(usersquiz);
-                    alert("Data to be saved: " + obj);
+                    
 
                     //create url for saving
                     //var url = baseURL + "&action=save&objectid=" + encodeURIComponent(UserName) + "&data=" + encodeURIComponent(res);
                     var url = "http://introtoapps.com/datastore.php?action=save&appid=214315615&objectid=usersquiz&data=" + encodeURIComponent(obj);
-                    alert("URL: " + url);
+                    
 
                     $.ajax({ url: url, cache: false })
                         .done(function (data) {
-                            alert("Result from server: " + data);
+                            
                         }).fail(function (jqXHR, textStatus) {
-                            alert("Request failed saving " + textStatus);
+                            alert("Request failed saving ");
                         });
                     alert("content saved");
 
@@ -228,7 +232,7 @@ function SubmitDetails(username, password)
             
         }).fail(function (jqXHR, textStatus)
         {
-            alert("Request failed loading " + textStatus);
+            alert("Request failed loading ");
         });
 
     
@@ -240,8 +244,8 @@ function SubmitDetails(username, password)
 function GetMain()
 {
     if (localStorage.getItem("Name") === null)
-    {
-        alert("Please Sign Up");
+    {       
+        $("#popupSignUp").popup("open"); 
         GetSignUp();
     }
     else
@@ -389,6 +393,7 @@ function DisplayPage(jsonObject, quizBut)
     }
 }
 
+//displays the mood survey page
 function DisplayPageMoodSurvey(jsonObject)
 {
     if (jsonObject[0].id = "quiz01")
@@ -407,6 +412,7 @@ function DisplayPageMoodSurvey(jsonObject)
     }
 }
 
+//displays teh exam page
 function DisplayPageExamGrade(jsonObject)
 {
     var examGrade = jsonObject[1];
@@ -502,6 +508,7 @@ function DisplayPageExamGrade(jsonObject)
     }
 }
 
+//function for when the next page button is clicked
 function GetNextPage(examGrade, count, pageArray)
 {
     
@@ -627,6 +634,7 @@ function GetNextPage(examGrade, count, pageArray)
     
 }
 
+//loads the users saved quiz from the datastore
 function LoadData()
 {
     
@@ -650,8 +658,9 @@ function LoadData()
                 }
                 else
                 {
-                    alert("No saved exam exists");
+                    $("#popupNoExam").popup("open");
                     GetMain();
+                    
                 }
             }
             catch (e)
@@ -664,6 +673,7 @@ function LoadData()
         });
 }
 
+//saves teh users quiz to the datastore
 function SaveExam()
 {
    
@@ -695,28 +705,29 @@ function SaveExam()
     userSavedData.push(saveObj);
 
     var obj = JSON.stringify(userSavedData);
-    alert("Data to be saved: " + obj);
-
+    
     var quizUser = "saveddata" + localStorage.getItem("Name");
 
     
     var url = "http://introtoapps.com/datastore.php?action=save&appid=214315615&objectid=" + encodeURIComponent(quizUser) + "&data=" + encodeURIComponent(obj);
-    alert("URL: " + url);
+    
 
     $.ajax({ url: url, cache: false })
         .done(function (data)
         {
-            alert("Result from server: " + data);
+            
 
         }).fail(function (jqXHR, textStatus)
         {
-            alert("Request failed saving " + textStatus);
+            alert("Request failed saving ");
         });
 
-    alert("content saved");
+    $("#popupContentSaved").popup("open");
+    
     
 }
 
+//calculates the score
 function GetScore()
 {
     var checkArray = [];
