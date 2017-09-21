@@ -5,16 +5,17 @@
 
 window.usersquiz = [];
 window.userSavedData = [];
-var answerArray = new Array();
-var eleIdArray = new Array();
-var values = new Array();
-var checkArr = new Array();
-var saveCheckArr = new Array();
-var saveValues = new Array();
-var obj = {};
+window.answerArray = [];
+window.eleIdArray = [];
+window.values = [];
+window.checkArr = [];
+window.saveCheckArr = [];
+window.saveValues = [];
+window.obj = {};
 
 $(document).ready(function ()
 {
+    localStorage.clear();
     //localStorage.removeItem('page');
     //var retPage = JSON.parse(localStorage.getItem('page'));
 
@@ -328,6 +329,15 @@ function DisplayPage(jsonObject, quizBut)
 {
     if (quizBut == "btnMoodSurvey")
     {
+        
+        answerArray.length = 0;
+        eleIdArray.length = 0;
+        values.length = 0;
+        checkArr.length = 0;
+        saveCheckArr.length = 0;
+        saveValues.length = 0;
+
+        
 
         var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Mood Survey</h1></div></div>');
         var quizPage = $("#main").html(page);
@@ -355,6 +365,15 @@ function DisplayPage(jsonObject, quizBut)
 
     if (quizBut == "btnExam")
     {
+        
+        answerArray.length = 0;
+        eleIdArray.length = 0;
+        values.length = 0;
+        checkArr.length = 0;
+        saveCheckArr.length = 0;
+        saveValues.length = 0;
+        
+
         var page = $('<div id="quizPage"><div data-role="header" data-theme="a"><a href="#" id="backToMain" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all">Back</a><h1>Exam Grade</h1></div></div>');
         var quizPage = $("#main").html(page);
 
@@ -444,6 +463,8 @@ function DisplayPageExamGrade(jsonObject)
                 }
                 else
                 {
+                    
+
                     $("input[type=text]").each(function ()
                     {
                         if (this.id == "1")
@@ -456,7 +477,9 @@ function DisplayPageExamGrade(jsonObject)
                         }
                     });
 
+                    localStorage.removeItem("load");
                     GetNextPage(examGrade, count, pageArray);
+                    break;
 
                     //var btnNextPage = $('<a href="#" data-role="button" class="ui-btn ui-btn-inline ui-corner-all ui-btn-b" id="btnNextPage">Next</a>')
                     //$("#panelGrey").append(btnNextPage).trigger('create');
@@ -606,7 +629,7 @@ function GetNextPage(examGrade, count, pageArray)
 
 function LoadData()
 {
-    localStorage.load = "true";
+    
     var quizUser = "saveddata" + localStorage.getItem("Name");
     var url = "http://introtoapps.com/datastore.php?action=load&appid=214315615&objectid=" + encodeURIComponent(quizUser);
 
@@ -619,6 +642,7 @@ function LoadData()
 
                 if (userSavedData.length > 0)
                 {
+                    localStorage.load = "true";
                     localStorage.stuId = userSavedData[0].Sid;
                     localStorage.nme = userSavedData[0].Name;
                     var butId = "btnExam";
@@ -909,6 +933,7 @@ function GetScore()
 function GetElements(array)
 {
     var questArray = array;
+    
     
     for (var key in questArray)
     {
